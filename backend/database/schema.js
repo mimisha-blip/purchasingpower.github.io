@@ -21,11 +21,16 @@ export function initializeDatabase(db) {
   `);
 
   // Items table
+  // pricing_model: 'unit' = priced per instance (multiplied by quantity).
+  // 'percentage' = a rate (e.g. tipping norm, card fee) applied to the
+  // basket's unit-priced subtotal rather than its own per-unit price.
   db.run(`
     CREATE TABLE IF NOT EXISTS items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
+      group_name TEXT NOT NULL DEFAULT 'Daily essentials',
+      pricing_model TEXT NOT NULL DEFAULT 'unit',
       description TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )

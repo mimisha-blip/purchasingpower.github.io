@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
     params.push(searchTerm, searchTerm);
   }
 
-  query += ` ORDER BY category, name`;
+  query += ` ORDER BY group_name, category, name`;
 
   db.all(query, params, (err, rows) => {
     if (err) {

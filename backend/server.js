@@ -7,6 +7,7 @@ import countriesRoutes from './routes/countries.js';
 import itemsRoutes from './routes/items.js';
 import convertRoutes from './routes/convert.js';
 import pricesRoutes from './routes/prices.js';
+import tripPlannerRoutes from './routes/tripPlanner.js';
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use('/api/countries', countriesRoutes);
 app.use('/api/items', itemsRoutes);
 app.use('/api/convert', convertRoutes);
 app.use('/api/prices', pricesRoutes);
+app.use('/api/trip-planner', tripPlannerRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
