@@ -2,11 +2,11 @@
 
 ## Problem
 
-Travelers often compare prices using exchange rates, but exchange rates do not show how expensive something feels relative to everyday costs at home. A coffee, taxi ride, hotel night, or loaf of bread can look affordable after currency conversion while still being expensive in real purchasing power terms.
+Travelers often judge whether something is "expensive" or "cheap" based only on currency conversion, which can lead to poor spending decisions. A $5 coffee may sound expensive when converted to Rs430, but it may be completely normal for that country.
 
 ## Why It Matters
 
-People planning international trips need a clearer way to understand real-world affordability. Purchase Parity Converter helps travelers, students, expats, and budget-conscious users estimate whether prices in another country feel cheap, normal, or expensive compared with their home economy.
+People planning international trips need a clearer way to understand real-world affordability before deciding what is worth buying. Purchase Parity Converter helps travelers, students, expats, and budget-conscious users estimate whether prices in another country feel cheap, normal, or expensive compared with their home economy.
 
 ## Solution
 
