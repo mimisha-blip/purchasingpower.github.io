@@ -1,6 +1,6 @@
 /**
- * Shared purchasing-power math, used by both the single-item converter and
- * the trip planner so the underlying formula can't drift between features.
+ * Shared purchasing-power math, used by conversion endpoints and the trip
+ * planner so the underlying formula can't drift between features.
  */
 
 export function convertPrice(price, fromPppIndex, toPppIndex) {

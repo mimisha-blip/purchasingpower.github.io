@@ -1,16 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { advisePrice } from './api.js';
 
 const DEFAULT_FORM = {
   item: 'lunch',
   destination_city: 'New York',
-  destination_country: 'USA',
-  home_country: 'India',
-  destination_currency: 'USD',
+  destination_country_id: '',
+  home_country_id: '',
   destination_price: '25',
-  home_currency: 'INR',
-  exchange_rate: '83',
-  affordability_score: '500',
   destination_typical_min: '18',
   destination_typical_max: '30',
   home_typical_min: '150',
@@ -18,9 +14,9 @@ const DEFAULT_FORM = {
 };
 
 const NUMERIC_FIELDS = new Set([
+  'destination_country_id',
+  'home_country_id',
   'destination_price',
-  'exchange_rate',
-  'affordability_score',
   'destination_typical_min',
   'destination_typical_max',
   'home_typical_min',
@@ -36,11 +32,26 @@ function toPayload(form) {
   );
 }
 
-export default function TravelPriceAdvisor() {
+function findCountryId(countries, code, fallbackIndex) {
+  return String(countries.find((c) => c.country_code === code)?.id ?? countries[fallbackIndex]?.id ?? '');
+}
+
+export default function TravelPriceAdvisor({ countries }) {
   const [form, setForm] = useState(DEFAULT_FORM);
   const [advice, setAdvice] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      home_country_id: prev.home_country_id || findCountryId(countries, 'IN', 0),
+      destination_country_id: prev.destination_country_id || findCountryId(countries, 'US', 1)
+    }));
+  }, [countries]);
+
+  const homeCountry = countries.find((c) => String(c.id) === String(form.home_country_id));
+  const destinationCountry = countries.find((c) => String(c.id) === String(form.destination_country_id));
 
   function updateField(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -66,7 +77,14 @@ export default function TravelPriceAdvisor() {
     <>
       <form onSubmit={handleSubmit} className="convert-form">
         <div className="advisor-question">
-          Is {form.destination_currency} {form.destination_price || '0'} for {form.item || 'this item'} in {form.destination_city || 'this city'} expensive for someone from {form.home_country || 'home'}?
+          Is {destinationCountry?.currency_code || ''} {form.destination_price || '0'} for {form.item || 'this item'} in {form.destination_city || 'this city'} expensive for someone from {homeCountry?.country_name || 'home'}?
+        </div>
+
+        <div className="score-explainer">
+          <strong>What is Travel Affordability Score?</strong>
+          <span>
+            It is the "feels like" price in your home currency. Currency conversion tells what you pay at the exchange rate; the score estimates how that price compares with everyday local affordability at home.
+          </span>
         </div>
 
         <div className="advisor-grid">
@@ -84,19 +102,19 @@ export default function TravelPriceAdvisor() {
           </div>
           <div className="field">
             <label htmlFor="advisor-destination">Destination country</label>
-            <input id="advisor-destination" value={form.destination_country} onChange={(e) => updateField('destination_country', e.target.value)} />
+            <select id="advisor-destination" value={form.destination_country_id} onChange={(e) => updateField('destination_country_id', e.target.value)}>
+              {countries.map((c) => (
+                <option key={c.id} value={c.id}>{c.country_name}</option>
+              ))}
+            </select>
           </div>
           <div className="field">
             <label htmlFor="advisor-home">Home country</label>
-            <input id="advisor-home" value={form.home_country} onChange={(e) => updateField('home_country', e.target.value)} />
-          </div>
-          <div className="field">
-            <label htmlFor="advisor-rate">Exchange rate</label>
-            <input id="advisor-rate" type="number" min="0" step="any" value={form.exchange_rate} onChange={(e) => updateField('exchange_rate', e.target.value)} />
-          </div>
-          <div className="field">
-            <label htmlFor="advisor-score">Travel Affordability Score</label>
-            <input id="advisor-score" type="number" min="0" step="any" value={form.affordability_score} onChange={(e) => updateField('affordability_score', e.target.value)} />
+            <select id="advisor-home" value={form.home_country_id} onChange={(e) => updateField('home_country_id', e.target.value)}>
+              {countries.map((c) => (
+                <option key={c.id} value={c.id}>{c.country_name}</option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -110,7 +128,7 @@ export default function TravelPriceAdvisor() {
             </div>
           </div>
           <div className="field">
-            <label>Typical {form.item || 'item'} in {form.home_country || 'home'}</label>
+            <label>Typical {form.item || 'item'} in {homeCountry?.country_name || 'home'}</label>
             <div className="range-row">
               <input type="number" min="0" step="any" value={form.home_typical_min} onChange={(e) => updateField('home_typical_min', e.target.value)} aria-label="Home typical minimum" />
               <span>to</span>
@@ -130,6 +148,16 @@ export default function TravelPriceAdvisor() {
         <section className="result advisor-result fade-in">
           <span className="insight-label">Travel Price Advisor</span>
           <h2>{advice.verdict}</h2>
+          <div className="advisor-facts">
+            <div>
+              <span>Exchange rate used</span>
+              <strong>1 {destinationCountry?.currency_code} = {homeCountry?.currency_code} {advice.exchange_rate?.toFixed(2)}</strong>
+            </div>
+            <div>
+              <span>Travel Affordability Score</span>
+              <strong>{homeCountry?.currency_code} {advice.affordability_score?.toFixed(2)}</strong>
+            </div>
+          </div>
           <p>{advice.conversion}</p>
           <p>{advice.affordability}</p>
           <p>{advice.localContext}</p>

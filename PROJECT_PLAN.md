@@ -41,6 +41,7 @@ Phase 1: Basic Conversion
 - Affordability indicator: cheap, similar, expensive, or very expensive
 - Insight Layer: explain what the converted price means in human terms, not just numbers
 - Travel Price Advisor: answer whether a specific travel price is cheap, normal, or expensive using local and home-country context
+- Single-item converter removed from the UI; the app should prioritize advice and trip planning over raw conversion.
 - No user accounts
 - No image recognition (Phase 2+)
 - Basic UI (no fancy design)
@@ -154,9 +155,9 @@ Endpoints:
 │   └── Returns the 10 MVP countries with affordability & exchange rate data
 ├── GET /api/items?country=IN&category=Food
 │   └── Returns items in specific country/category
-├── POST /api/convert
-│   ├── Input: source_country, dest_country, item_id
-│   └── Output: original_price, currency_conversion_price, travel_affordability_score, verdict
+├── POST /api/advisor/price
+│   ├── Input: home_country_id, destination_country_id, item price, local ranges
+│   └── Output: currency conversion, Travel Affordability Score, verdict, explanation
 ├── GET /api/item-search?q=coffee
 │   └── Fuzzy search for items
 └── POST /api/prices (future: crowdsource prices)

@@ -55,3 +55,27 @@ export function buildTravelPriceAdvice(input) {
     summary: `It is not a scam price, but it is ${feelsExpensiveAtHome ? 'expensive' : 'reasonable'} compared with ${countryAdjective(input.homeCountry)} daily food costs.`
   };
 }
+
+export function buildAdvisorInputFromCountries({
+  item,
+  destinationCity,
+  destinationCountry,
+  homeCountry,
+  destinationPrice,
+  destinationTypicalRange,
+  homeTypicalRange
+}) {
+  return {
+    item,
+    destinationCity,
+    destinationCountry: destinationCountry.country_name,
+    homeCountry: homeCountry.country_name,
+    destinationCurrency: destinationCountry.currency_code,
+    destinationPrice,
+    homeCurrency: homeCountry.currency_code,
+    exchangeRate: homeCountry.exchange_rate / destinationCountry.exchange_rate,
+    affordabilityScore: destinationPrice * homeCountry.ppp_index / destinationCountry.ppp_index,
+    destinationTypicalRange,
+    homeTypicalRange
+  };
+}

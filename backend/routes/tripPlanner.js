@@ -146,13 +146,9 @@ router.post('/estimate', (req, res) => {
 
                 const total = unitSubtotal + feeTotal;
                 // Convert local-currency total to home currency using the real
-                // market exchange rate, not the PPP index. PPP is used above to
-                // *estimate* a missing local price, but converting that estimate
-                // back to home currency via PPP would cancel the destination's
-                // own PPP index out of the equation entirely — every country
-                // without real price data would collapse to the same number.
-                // The market rate is what you actually pay when converting money,
-                // and it captures genuine cost differences PPP is designed to erase.
+                // market exchange rate, not the affordability index. The index
+                // is used above to estimate missing local prices, while this
+                // table shows what the basket costs at the exchange rate.
                 const basketTotalHomeEquivalent = convertPrice(total, country.exchange_rate, homeCountry.exchange_rate);
                 const pctOfIncome = (basketTotalHomeEquivalent / monthly_income) * 100;
 

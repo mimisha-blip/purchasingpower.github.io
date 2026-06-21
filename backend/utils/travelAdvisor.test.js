@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTravelPriceAdvice } from './travelAdvisor.js';
+import { buildTravelPriceAdvice, buildAdvisorInputFromCountries } from './travelAdvisor.js';
 
 test('explains whether a New York lunch is normal or expensive for an Indian traveler', () => {
   const advice = buildTravelPriceAdvice({
@@ -25,4 +25,31 @@ test('explains whether a New York lunch is normal or expensive for an Indian tra
     homeContext: 'Compared with a typical lunch in India at INR 150.00-300.00, it will still feel expensive against everyday food costs at home.',
     summary: 'It is not a scam price, but it is expensive compared with Indian daily food costs.'
   });
+});
+
+test('derives exchange conversion and affordability score from country indexes', () => {
+  const input = buildAdvisorInputFromCountries({
+    item: 'lunch',
+    destinationCity: 'New York',
+    destinationCountry: {
+      country_name: 'United States',
+      currency_code: 'USD',
+      exchange_rate: 1,
+      ppp_index: 1
+    },
+    homeCountry: {
+      country_name: 'India',
+      currency_code: 'INR',
+      exchange_rate: 83,
+      ppp_index: 20
+    },
+    destinationPrice: 25,
+    destinationTypicalRange: { min: 18, max: 30 },
+    homeTypicalRange: { min: 150, max: 300 }
+  });
+
+  assert.equal(input.exchangeRate, 83);
+  assert.equal(input.affordabilityScore, 500);
+  assert.equal(input.destinationCurrency, 'USD');
+  assert.equal(input.homeCurrency, 'INR');
 });

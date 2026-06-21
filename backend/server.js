@@ -5,7 +5,6 @@ import sqlite3 from 'sqlite3';
 import { initializeDatabase } from './database/schema.js';
 import countriesRoutes from './routes/countries.js';
 import itemsRoutes from './routes/items.js';
-import convertRoutes from './routes/convert.js';
 import pricesRoutes from './routes/prices.js';
 import tripPlannerRoutes from './routes/tripPlanner.js';
 import advisorRoutes from './routes/advisor.js';
@@ -39,7 +38,6 @@ app.get('/api/health', (req, res) => {
 // Routes
 app.use('/api/countries', countriesRoutes);
 app.use('/api/items', itemsRoutes);
-app.use('/api/convert', convertRoutes);
 app.use('/api/prices', pricesRoutes);
 app.use('/api/trip-planner', tripPlannerRoutes);
 app.use('/api/advisor', advisorRoutes);

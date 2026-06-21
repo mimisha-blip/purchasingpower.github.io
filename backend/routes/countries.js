@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * GET /api/countries
- * Returns all countries with their PPP and exchange rate data
+ * Returns all countries with their affordability and exchange rate data
  */
 router.get('/', (req, res) => {
   db.all(

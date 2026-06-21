@@ -12,7 +12,7 @@ People planning international trips need a clearer way to understand real-world 
 
 Purchase Parity Converter is a web app that compares travel prices with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what a price feels like in the user's home country and whether it is meaningfully cheaper, similar, or more expensive than the home benchmark.
 
-The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor.
+The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor. The single-item converter was removed so the app can focus on advice instead of raw conversion.
 
 ## How It Works
 
@@ -20,7 +20,7 @@ The MVP is intentionally focused: 10 high-interest countries, 10 common travel i
 2. Pick one of 10 common travel items.
 3. The backend combines item prices, exchange rates, and purchasing-power data.
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
-5. The Travel Price Advisor answers questions like, "Is $25 for lunch in New York expensive for someone from India?" using local price ranges and home-country affordability context.
+5. The Travel Price Advisor answers questions like, "Is $25 for lunch in New York expensive for someone from India?" using stored exchange rates, local price ranges, and home-country affordability context.
 
 Core calculation:
 
@@ -53,7 +53,7 @@ Answer: $25 is normal for lunch in New York, but for someone from India it may f
 - Insight Layer: plain-English interpretation of Travel Affordability Score results
 - Travel Price Advisor: structured AI-style explanation using local range, exchange-rate, and affordability-score data
 - Data model: countries, items, prices, affordability indexes, exchange rates
-- API routes: countries, items, prices, single-item conversion, trip planning
+- API routes: countries, items, prices, travel price advisor, trip planning
 - Version control and hosting: GitHub
 
 ## Future Improvements
@@ -68,4 +68,4 @@ Answer: $25 is normal for lunch in New York, but for someone from India it may f
 
 ## Screenshots
 
-Screenshots are not committed yet. Add app screenshots here after capturing the trip planner and single-item converter screens.
+Screenshots are not committed yet. Add app screenshots here after capturing the Travel Price Advisor and Trip Planner screens.

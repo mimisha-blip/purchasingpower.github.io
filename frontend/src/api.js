@@ -20,17 +20,6 @@ export function getItems() {
   return request('/items');
 }
 
-export function convert(sourceCountryId, destCountryId, itemId) {
-  return request('/convert', {
-    method: 'POST',
-    body: JSON.stringify({
-      source_country_id: sourceCountryId,
-      dest_country_id: destCountryId,
-      item_id: itemId
-    })
-  });
-}
-
 export function estimateTrip(homeCountryId, monthlyIncome, basket, candidateCountryIds) {
   return request('/trip-planner/estimate', {
     method: 'POST',

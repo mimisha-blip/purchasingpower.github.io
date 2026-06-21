@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getCountries, getItems } from './api.js';
-import SingleItemConverter from './SingleItemConverter.jsx';
 import TripPlanner from './TripPlanner.jsx';
 import TravelPriceAdvisor from './TravelPriceAdvisor.jsx';
 import TravelBackdrop from './TravelBackdrop.jsx';
@@ -10,7 +9,7 @@ export default function App() {
   const [countries, setCountries] = useState([]);
   const [items, setItems] = useState([]);
   const [loadError, setLoadError] = useState('');
-  const [activeTab, setActiveTab] = useState('planner');
+  const [activeTab, setActiveTab] = useState('advisor');
 
   useEffect(() => {
     Promise.all([getCountries(), getItems()])
@@ -62,32 +61,24 @@ export default function App() {
         <div className="tab-toggle">
           <div className={`tab-indicator tab-${activeTab}`} />
           <button
-            className={activeTab === 'planner' ? 'active' : ''}
-            onClick={() => setActiveTab('planner')}
-          >
-            🧳 Trip Planner
-          </button>
-          <button
-            className={activeTab === 'converter' ? 'active' : ''}
-            onClick={() => setActiveTab('converter')}
-          >
-            🔁 Single-Item Converter
-          </button>
-          <button
             className={activeTab === 'advisor' ? 'active' : ''}
             onClick={() => setActiveTab('advisor')}
           >
             Advisor
           </button>
+          <button
+            className={activeTab === 'planner' ? 'active' : ''}
+            onClick={() => setActiveTab('planner')}
+          >
+            Trip Planner
+          </button>
         </div>
 
         <div key={activeTab} className="tab-panel">
-          {activeTab === 'planner' ? (
-            <TripPlanner countries={countries} items={items} />
-          ) : activeTab === 'converter' ? (
-            <SingleItemConverter countries={countries} items={items} />
+          {activeTab === 'advisor' ? (
+            <TravelPriceAdvisor countries={countries} />
           ) : (
-            <TravelPriceAdvisor />
+            <TripPlanner countries={countries} items={items} />
           )}
         </div>
       </div>
