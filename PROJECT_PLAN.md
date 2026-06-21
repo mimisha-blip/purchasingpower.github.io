@@ -6,7 +6,7 @@
 ## 1. PROJECT OVERVIEW
 
 **Problem Statement:**
-When traveling internationally, travelers struggle to understand the real cost of items because exchange rates don't reflect purchasing power parity (PPP). A loaf of bread that costs ₹20 in India costs $4 in the US, but the PPP-adjusted cost tells a different story about affordability.
+Travelers often judge whether something is "expensive" or "cheap" based only on currency conversion, which can lead to poor spending decisions. A $5 coffee may sound expensive when converted to ₹430, but it may be completely normal for that country.
 
 **Solution:**
 A web/mobile app that converts prices between countries using PPP adjustments, helping travelers understand what items ACTUALLY cost relative to their home economy.
@@ -24,18 +24,19 @@ A web/mobile app that converts prices between countries using PPP adjustments, h
 ### Core Features for MVP
 ```
 Phase 1: Basic Conversion
-├── Country selector (from/to)
-├── Item search database (pre-loaded ~50 common items)
-├── PPP conversion calculation
-├── Display home equivalent price
+├── Country selector for 10 high-interest countries
+├── Item selector for 10 common travel items
+├── PPP comparison calculation
+├── Affordability indicator
+├── Display home-equivalent price
 └── Mobile responsive UI
 ```
 
 **MVP Scope:**
-- All countries globally (~195 countries)
-  - Core database: ~40-50 major countries with complete data
-  - Others: Basic PPP data available, prices can be added incrementally
-- ~50 common items (bread, rice, coffee, taxi, hotel, etc.)
+- Top 10 countries: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
+- 10 common travel items: coffee/tea, bottled water, snack, sit-down meal, fast food, groceries, public transit, taxi/rideshare, local SIM card, budget hotel
+- PPP comparison between home and destination country
+- Affordability indicator: cheap, similar, expensive, or very expensive
 - No user accounts
 - No image recognition (Phase 2+)
 - Basic UI (no fancy design)
@@ -46,18 +47,18 @@ Phase 1: Basic Conversion
 ## 3. FEATURE BREAKDOWN
 
 ### Phase 1: MVP (Weeks 1-2)
-- [ ] Basic UI: country selection (all countries) + item search
+- [ ] Basic UI: country selection from top 10 countries + item selection
 - [ ] Backend: PPP conversion logic
-- [ ] Database: Common items with prices in ~50 major countries
+- [ ] Database: 10 common items with prices anchored for the MVP country set
 - [ ] Display: **Smart & Simple**
-  - Default: "USA $4 bread = costs like ₹80 in India" (PPP-adjusted)
-  - Toggle for details: Shows % cheaper/expensive vs home + monthly budget impact
-  - Optional income field: Calculate "~5% of your daily income" (if provided)
+  - Default: "USA $4.50 coffee = feels like ₹91 in India" (PPP-adjusted)
+  - Shows % cheaper/expensive vs home
+  - Shows affordability indicator
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 
 ### Phase 2: Enhancement (Weeks 3-4)
-- [ ] Expand item database to all 195 countries (gradual)
+- [ ] Expand item database beyond the top 10 countries
 - [ ] Category filtering (Food, Transport, Accommodation, etc.)
 - [ ] Trip calculator ("I'm staying 10 days, estimate my budget")
 - [ ] Crowdsourced price updates
@@ -96,7 +97,7 @@ Phase 1: Basic Conversion
 ```
 {
   item_id: 1,
-  name: "Bread (1 loaf)",
+  name: "Coffee or tea (1 cup)",
   country: "India",
   price: 20,
   currency: "INR",
@@ -144,13 +145,13 @@ State Management: Context API or Zustand (simple app, no Redux needed)
 Technology: Node.js + Express.js (or Python + Flask)
 Endpoints:
 ├── GET /api/countries
-│   └── Returns all countries with PPP & exchange rates
+│   └── Returns the 10 MVP countries with PPP & exchange rate data
 ├── GET /api/items?country=IN&category=Food
 │   └── Returns items in specific country/category
 ├── POST /api/convert
 │   ├── Input: source_country, dest_country, item_id
 │   └── Output: original_price, home_equivalent, ppp_ratio
-├── GET /api/item-search?q=bread
+├── GET /api/item-search?q=coffee
 │   └── Fuzzy search for items
 └── POST /api/prices (future: crowdsource prices)
 ```
@@ -181,11 +182,11 @@ Database: Supabase (PostgreSQL free tier) or MongoDB Atlas
 HomeEquivalentPrice = DestinationPrice × PPP_Ratio
 
 Example:
-- Item: Bread in USA = $4
+- Item: Coffee in USA = $4.50
 - PPP_Ratio (USD to INR) = 20
-- HomeEquivalentPrice (in INR) = 4 × 20 = ₹80
-- Compare to actual: ₹20 in India
-- Conclusion: Bread is 4x more expensive in USA
+- HomeEquivalentPrice (in INR) = 4.5 × 20 = ₹90
+- Compare to actual: ₹50 in India
+- Conclusion: Coffee is more expensive in the USA, but the indicator explains whether it is cheap, similar, or expensive relative to home.
 ```
 
 ### Expense Classification
@@ -217,7 +218,6 @@ System shows:
   
   [Show more ▼] – reveals:
   Monthly if bought daily: ~¥13,500 (vs ¥15,000 in Japan)
-  Optional: "~8% of your daily income" (if income provided)
 ↓
 User sees options: Check another item / View trip calculator
 ```
@@ -254,22 +254,26 @@ User: "Oh! That's overpriced. I'll go to a local café"
 1. **PPP Data**: Download from World Bank (one-time, update yearly)
 2. **Exchange Rates**: `exchangerate-api.com` (free API, update daily)
 3. **Item Prices**: 
-   - Manually enter ~50 common items for 3-5 countries
+   - Manually enter 10 common travel items for the focused MVP country set
    - Sources: Numbeo, Expatica, local research
    - Format: CSV → import to database
 
-### Example Price List (Multi-country):
+### Example Price List (MVP items):
 ```
 Item          | India   | USA    | UK     | Japan  | Brazil | Australia
-Bread (1 loaf)| ₹20     | $4     | £1.5   | ¥300   | R$8    | A$5
-Rice (1kg)    | ₹40     | $8     | £3     | ¥900   | R$15   | A$10
 Coffee        | ₹50     | $4.50  | £3     | ¥500   | R$12   | A$6
+Bottled water | ₹20     | $1.50  | £1     | ¥120   | R$4    | A$3
+Snack         | ₹40     | $4     | £3     | ¥300   | R$8    | A$5
+Casual meal   | ₹300    | $18    | £14    | ¥1500  | R$40   | A$25
+Fast food     | ₹250    | $9     | £7     | ¥900   | R$30   | A$14
+Groceries     | ₹600    | $35    | £28    | ¥5000  | R$120  | A$60
+Transit ride  | ₹20     | $2.75  | £2.80  | ¥220   | R$5    | A$5
 Taxi ride     | ₹100    | $15    | £12    | ¥2000  | R$50   | A$25
-Hotel room    | ₹1500   | $100   | £80    | ¥12000 | R$300  | A$150
-Massage       | ₹300    | $60    | £45    | ¥6000  | R$80   | A$80
+Local SIM     | ₹50     | $10    | £5     | ¥1500  | R$20   | A$10
+Budget hotel  | ₹1000   | $70    | £55    | ¥8000  | R$180  | A$120
 ```
 
-**MVP Coverage (50 major countries):** USA, UK, Canada, Australia, New Zealand, Japan, South Korea, China, India, Thailand, Vietnam, Indonesia, Philippines, Malaysia, Singapore, UAE, Saudi Arabia, Mexico, Brazil, Argentina, Chile, Peru, France, Germany, Italy, Spain, Netherlands, Switzerland, Sweden, Norway, Denmark, Poland, Greece, Portugal, Turkey, Egypt, South Africa, Kenya, Nigeria, and more...
+**MVP Coverage (10 countries):** India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil.
 
 ### Phase 2+:
 - Integrate Numbeo API
@@ -329,22 +333,22 @@ Week 3+: Phase 2 features
 ## 11. SUCCESS METRICS
 
 - [ ] MVP deployed and accessible
-- [ ] Converts prices between any two countries accurately
+- [ ] Converts prices across the 10 MVP countries accurately
 - [ ] UI is intuitive (user can convert in < 30 seconds)
 - [ ] Mobile responsive (web)
-- [ ] ~50 items in database across ~50 countries
+- [ ] 10 common items in database across the MVP country set
 - [ ] Both "Simple" and "Detailed" views working
-- [ ] % of daily earnings calculated when income provided
+- [ ] Affordability indicator clearly labels cheap, similar, expensive, or very expensive
 
 ---
 
 ## 12. DECISIONS FINALIZED ✅
 
 1. **Mobile app or web-only for MVP?** ✅ Web-first, mobile app in Phase 3
-2. **How to handle PPP for countries without official data?** ✅ Use exchange rate as fallback + crowdsource
-3. **Should we include user income level?** ✅ Both views: Simple (home equivalent) + Detailed (% of earnings)
+2. **How to handle PPP for countries without official data?** ✅ Keep the MVP to countries with usable PPP data
+3. **Should we include user income level?** ✅ Not needed for the MVP
 4. **Price update frequency?** ✅ Monthly for MVP, real-time Phase 2+
-5. **Target countries for MVP?** ✅ All 195 countries supported, ~50 with detailed price data
+5. **Target countries for MVP?** ✅ 10 countries: India, US, UK, Japan, Australia, Canada, Germany, France, Singapore, Brazil
 
 ---
 

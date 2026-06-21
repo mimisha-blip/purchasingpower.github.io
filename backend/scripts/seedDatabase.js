@@ -9,6 +9,20 @@ const db = new sqlite3.Database(DB_PATH);
 db.serialize();
 initializeDatabase(db);
 
+const MVP_COUNTRY_CODES = new Set(['IN', 'US', 'GB', 'JP', 'AU', 'CA', 'DE', 'FR', 'SG', 'BR']);
+const MVP_ITEM_NAMES = new Set([
+  'Breakfast pastry or snack (1 item)',
+  'Casual sit-down meal (1 person)',
+  'Fast food combo meal (1 person)',
+  'Bottled water (1.5L)',
+  'Coffee or tea (1 cup)',
+  'Basic groceries (1 week, 1 person)',
+  'Public transit (1 ride)',
+  'Taxi or rideshare (short ride, ~3km)',
+  'Local SIM card (one-time, no data)',
+  'Budget hotel or guesthouse room (1 night)'
+]);
+
 function runAsync(sql, params=[]) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function(err) {
@@ -30,6 +44,10 @@ function getAsync(sql, params=[]) {
 async function seed() {
   try {
     console.log('Seeding database at', DB_PATH);
+
+    await runAsync(`DELETE FROM prices`);
+    await runAsync(`DELETE FROM items`);
+    await runAsync(`DELETE FROM countries`);
 
     // Countries: real PPP conversion factors and official exchange rates
     // from the World Bank (most recent available year per country, ~2023),
@@ -236,7 +254,9 @@ async function seed() {
       { code: 'ZW', name: 'Zimbabwe', currency: 'ZWG', symbol: 'ZWG', ppp: 0.7139, exch: 3509.1722, region: 'Sub-Saharan Africa' },
     ];
 
-    for (const c of countries) {
+    const mvpCountries = countries.filter((c) => MVP_COUNTRY_CODES.has(c.code));
+
+    for (const c of mvpCountries) {
       // upsert
       await runAsync(
         `INSERT OR REPLACE INTO countries (country_code, country_name, currency_code, currency_symbol, ppp_index, exchange_rate, region, updated_at) 
@@ -316,7 +336,9 @@ async function seed() {
       { name: 'Emergency doctor visit (1 visit)', category: 'Easy-to-forget hidden costs', group: 'Easy-to-forget hidden costs', model: 'unit' },
     ];
 
-    for (const it of items) {
+    const mvpItems = items.filter((it) => MVP_ITEM_NAMES.has(it.name));
+
+    for (const it of mvpItems) {
       await runAsync(
         `INSERT INTO items (name, category, group_name, pricing_model, description, created_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
         [it.name, it.category, it.group, it.model, null]

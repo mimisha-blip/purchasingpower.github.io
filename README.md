@@ -12,13 +12,14 @@ People planning international trips need a clearer way to understand real-world 
 
 Purchase Parity Converter is a web app that adjusts travel and item costs using purchasing power parity (PPP). Instead of only converting currencies, it shows what a price feels like in the user's home country and helps estimate realistic trip budgets.
 
+The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, PPP comparison, and a simple affordability indicator.
+
 ## How It Works
 
-1. Select a home country and destination country.
-2. Choose either the trip planner or single-item converter.
-3. Pick common travel categories or specific items.
-4. The backend combines item prices, exchange rates, and PPP data.
-5. The frontend displays a home-equivalent cost and practical travel budget context.
+1. Select a home country and destination country from the MVP country set.
+2. Pick one of 10 common travel items.
+3. The backend combines item prices, exchange rates, and PPP data.
+4. The frontend displays a home-equivalent cost, PPP comparison, and affordability indicator.
 
 Core calculation:
 
@@ -29,8 +30,8 @@ Home Equivalent Price = Destination Price x PPP Ratio
 Example:
 
 ```text
-Bread in the USA = $4
-PPP-adjusted equivalent in India = Rs80
+Coffee in the USA = $4.50
+PPP-adjusted equivalent in India = Rs91
 ```
 
 ## Tech Stack
@@ -38,13 +39,14 @@ PPP-adjusted equivalent in India = Rs80
 - Frontend: React, Vite, CSS
 - Backend: Node.js, Express
 - Database: SQLite
+- MVP data: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
 - Data model: countries, items, prices, PPP indexes, exchange rates
 - API routes: countries, items, prices, single-item conversion, trip planning
 - Version control and hosting: GitHub
 
 ## Future Improvements
 
-- Add more countries and item prices.
+- Add more countries and item prices after the focused MVP is working well.
 - Add city-level comparisons.
 - Support user-submitted price updates.
 - Add receipt or menu image scanning.
