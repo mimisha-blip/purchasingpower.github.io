@@ -13,7 +13,10 @@ const ITEM_SEARCH_TERMS = [
   { patterns: ['grocery', 'groceries'], term: 'groceries' },
   { patterns: ['transit', 'metro', 'bus', 'train'], term: 'transit' },
   { patterns: ['sim', 'data', 'mobile'], term: 'SIM' },
-  { patterns: ['hotel', 'stay', 'room'], term: 'hotel' }
+  { patterns: ['hotel', 'stay', 'room'], term: 'hotel' },
+  { patterns: ['iphone', 'phone', 'smartphone'], term: 'phone' },
+  { patterns: ['laptop', 'macbook', 'computer'], term: 'laptop' },
+  { patterns: ['shoe', 'sneaker', 'clothes', 'clothing', 'shirt'], term: 'clothing' }
 ];
 
 function resolveItemSearchTerm(item) {

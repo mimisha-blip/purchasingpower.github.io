@@ -241,43 +241,15 @@ input:focus {
   line-height: 1.45;
 }
 
-.advisor-process {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+.advisor-note {
   margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: advisor-process;
-}
-
-.advisor-process li {
-  position: relative;
-  min-height: 86px;
-  padding: 34px 10px 10px;
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #eef2f9;
   border-radius: 10px;
-  color: #7c2d12;
-  font-size: 0.8rem;
-  line-height: 1.35;
-}
-
-.advisor-process li::before {
-  counter-increment: advisor-process;
-  content: counter(advisor-process);
-  position: absolute;
-  top: 9px;
-  left: 10px;
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  background: #9a3412;
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 0.72rem;
-  font-weight: 800;
+  padding: 11px 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .advisor-grid {
@@ -336,40 +308,6 @@ input:focus {
   color: #64748b;
   font-size: 0.78rem;
   line-height: 1.35;
-}
-
-.advisor-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.advisor-step {
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 10px;
-  align-items: start;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #eef2f9;
-  border-radius: 12px;
-}
-
-.advisor-step > span {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  background: #795548;
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.advisor-step p {
-  margin-top: 4px;
-  color: #475569;
 }
 
 /* ---------- Buttons ---------- */
@@ -1092,7 +1030,6 @@ button.secondary:hover {
 
   .advisor-grid,
   .advisor-facts,
-  .advisor-process,
   .insight-metrics,
   .result-grid {
     grid-template-columns: 1fr;

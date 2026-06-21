@@ -52,6 +52,22 @@ const DEFAULT_PRICE_CONTEXT = {
   taxi: {
     destinationTypicalRange: { USD: { min: 12, max: 25 } },
     homeTypicalRange: { INR: { min: 100, max: 300 } }
+  },
+  phone: {
+    destinationTypicalRange: { USD: { min: 799, max: 1199 } },
+    homeTypicalRange: { INR: { min: 70000, max: 160000 } }
+  },
+  laptop: {
+    destinationTypicalRange: { USD: { min: 900, max: 1800 } },
+    homeTypicalRange: { INR: { min: 70000, max: 180000 } }
+  },
+  clothing: {
+    destinationTypicalRange: { USD: { min: 20, max: 80 } },
+    homeTypicalRange: { INR: { min: 500, max: 3000 } }
+  },
+  product: {
+    destinationTypicalRange: { USD: { min: 20, max: 100 } },
+    homeTypicalRange: { INR: { min: 1000, max: 8000 } }
   }
 };
 
@@ -61,12 +77,39 @@ function fallbackRange(currency, type) {
   return { min: 10, max: 30 };
 }
 
+function getItemContext(item) {
+  const normalized = item.toLowerCase();
+  if (normalized.includes('coffee') || normalized.includes('tea')) return { key: 'coffee', category: 'food', benchmark: `${item} prices` };
+  if (normalized.includes('taxi') || normalized.includes('cab') || normalized.includes('ride') || normalized.includes('uber')) return { key: 'taxi', category: 'transport', benchmark: `${item} prices` };
+  if (normalized.includes('iphone') || normalized.includes('phone') || normalized.includes('smartphone')) return { key: 'phone', category: 'product', benchmark: `${item} prices` };
+  if (normalized.includes('laptop') || normalized.includes('macbook') || normalized.includes('computer')) return { key: 'laptop', category: 'product', benchmark: `${item} prices` };
+  if (normalized.includes('shoe') || normalized.includes('sneaker') || normalized.includes('clothes') || normalized.includes('clothing') || normalized.includes('shirt')) return { key: 'clothing', category: 'product', benchmark: `${item} prices` };
+  if (normalized.includes('lunch') || normalized.includes('dinner') || normalized.includes('meal') || normalized.includes('food')) return { key: 'lunch', category: 'food', benchmark: 'daily food costs' };
+  return { key: 'product', category: 'product', benchmark: `${item} prices` };
+}
+
+function homeComparisonText({ item, homeCountry, homeFeel }) {
+  const context = getItemContext(item);
+
+  if (context.category === 'food') {
+    return `${homeFeel} compared with ${countryAdjective(homeCountry)} daily food costs`;
+  }
+
+  return `${homeFeel} compared with ${countryAdjective(homeCountry)} ${context.benchmark}`;
+}
+
+function homeContextText({ item, homeCountry, homeFeel }) {
+  const context = getItemContext(item);
+
+  if (context.category === 'food') {
+    return `${homeFeel} against everyday food costs`;
+  }
+
+  return `${homeFeel} compared with ${countryAdjective(homeCountry)} ${context.benchmark}`;
+}
+
 export function getDefaultPriceContext({ item, destinationCurrency, homeCurrency }) {
-  const key = item.toLowerCase().includes('coffee')
-    ? 'coffee'
-    : item.toLowerCase().includes('taxi')
-      ? 'taxi'
-      : 'lunch';
+  const { key } = getItemContext(item);
   const context = DEFAULT_PRICE_CONTEXT[key];
 
   return {
@@ -87,37 +130,17 @@ export function buildTravelPriceAdvice(input) {
   const destinationRange = formatRange(input.destinationCurrency, input.destinationTypicalRange);
   const homeRange = formatRange(input.homeCurrency, input.homeTypicalRange);
   const homeFeel = feelsExpensiveAtHome ? 'expensive' : 'reasonable';
-  const summary = `It is not a scam price, but it is ${homeFeel} compared with ${countryAdjective(input.homeCountry)} daily food costs.`;
+  const homeComparison = homeComparisonText({ item: input.item, homeCountry: input.homeCountry, homeFeel });
+  const homeContext = homeContextText({ item: input.item, homeCountry: input.homeCountry, homeFeel });
+  const summary = `It is not a scam price, but it is ${homeComparison}.`;
 
   return {
     verdict: sentenceCase(localVerdict),
     conversion: `${destinationPrice} is about ${convertedAmount} by currency conversion.`,
     affordability: `For someone from ${input.homeCountry}, it may feel closer to spending around ${affordabilityAmount}.`,
     localContext: `In ${input.destinationCity}, a typical ${input.item} is around ${destinationRange}, so this is ${localVerdict}.`,
-    homeContext: `Compared with a typical ${input.item} in ${input.homeCountry} at ${homeRange}, it will still feel ${homeFeel} against everyday food costs at home.`,
-    summary,
-    steps: [
-      {
-        title: 'Convert the price',
-        detail: `${destinationPrice} is about ${convertedAmount} at the exchange rate.`
-      },
-      {
-        title: 'Calculate the feels-like value',
-        detail: `For someone from ${input.homeCountry}, this feels closer to ${affordabilityAmount}.`
-      },
-      {
-        title: 'Check the local range',
-        detail: `A typical ${input.item} in ${input.destinationCity} is ${destinationRange}, so ${destinationPrice} is ${localVerdict}.`
-      },
-      {
-        title: 'Compare with home prices',
-        detail: `A typical ${input.item} in ${input.homeCountry} is ${homeRange}, so ${affordabilityAmount} feels ${homeFeel} at home.`
-      },
-      {
-        title: 'Give the verdict',
-        detail: summary
-      }
-    ]
+    homeContext: `Compared with a typical ${input.item} in ${input.homeCountry} at ${homeRange}, it will still feel ${homeContext} at home.`,
+    summary
   };
 }
 

@@ -74,12 +74,9 @@ export default function TravelPriceAdvisor({ countries }) {
           </strong>
         </div>
 
-        <ol className="advisor-process">
-          <li>You enter the item and the price you saw.</li>
-          <li>The app fills exchange rates and normal ranges.</li>
-          <li>It calculates what that price feels like at home.</li>
-          <li>You get a simple cheap, normal, or expensive verdict.</li>
-        </ol>
+        <p className="advisor-note">
+          Add the price you saw. The advisor fills the exchange rate and comparison data automatically.
+        </p>
 
         <div className="advisor-grid">
           <div className="field">
@@ -118,30 +115,24 @@ export default function TravelPriceAdvisor({ countries }) {
       {advice && (
         <section className="result advisor-result fade-in">
           <span className="insight-label">Travel Price Advisor</span>
-          <h2>{advice.verdict}</h2>
+          <h2>Summary</h2>
           <strong className="advisor-summary">{advice.summary}</strong>
           <div className="advisor-facts">
             <div>
               <span>Currency conversion</span>
-              <strong>1 {destinationCountry?.currency_code} = {homeCountry?.currency_code} {advice.exchange_rate?.toFixed(2)}</strong>
-              <small>What the price becomes after exchange rate conversion.</small>
+              <strong>{advice.conversion}</strong>
+              <small>Rate used: 1 {destinationCountry?.currency_code} = {homeCountry?.currency_code} {advice.exchange_rate?.toFixed(2)}</small>
             </div>
             <div>
               <span>Travel Affordability Score</span>
               <strong>{homeCountry?.currency_code} {advice.affordability_score?.toFixed(2)}</strong>
               <small>What this feels like in your home economy.</small>
             </div>
-          </div>
-          <div className="advisor-steps">
-            {advice.steps.map((step, index) => (
-              <div key={step.title} className="advisor-step">
-                <span>{index + 1}</span>
-                <div>
-                  <strong>{step.title}</strong>
-                  <p>{step.detail}</p>
-                </div>
-              </div>
-            ))}
+            <div>
+              <span>Verdict</span>
+              <strong>{advice.verdict}</strong>
+              <small>{advice.localContext}</small>
+            </div>
           </div>
         </section>
       )}

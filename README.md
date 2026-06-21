@@ -37,19 +37,21 @@ Travel Affordability Score = Feels like spending Rs90 in India
 Verdict = Normal local pricing
 ```
 
-The advisor explains the answer step by step:
+The advisor gives a summary-first answer:
 
-1. Convert the destination price into the user's home currency.
-2. Calculate the Travel Affordability Score, which is the "feels like" amount at home.
-3. Compare the price against the normal local range.
-4. Compare the score against normal home-country prices.
-5. Give a simple verdict.
+1. A short verdict in plain language.
+2. Currency conversion for the price the traveler entered.
+3. Travel Affordability Score, which is the "feels like" amount at home.
+4. A local comparison using the right item context, such as food, transport, stay, or products.
 
 Advisor example:
 
 ```text
 Question: Is $25 for lunch in the USA expensive for someone from India?
 Answer: $25 is normal for lunch in the USA, but for someone from India it may feel like spending around Rs500. It is not a scam price, but it is expensive compared with Indian daily food costs.
+
+Question: Is $999 for an iPhone in the USA expensive for someone from India?
+Answer: $999 may be normal for an iPhone in the USA, and for someone from India it should be compared with Indian iPhone prices, not daily food costs.
 ```
 
 ## Tech Stack
