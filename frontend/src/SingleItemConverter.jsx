@@ -3,10 +3,32 @@ import { convert } from './api.js';
 import { countryFlag } from './flags.js';
 import StatusBadge from './StatusBadge.jsx';
 
+const GROUP_ORDER = [
+  'Daily essentials',
+  'Trip-level costs',
+  'Lifestyle & discretionary',
+  'Easy-to-forget hidden costs'
+];
+
 export default function SingleItemConverter({ countries, items }) {
   // Percentage-based items (tipping norms, card fees) don't have a per-unit
   // price to compare across countries — only unit-priced items apply here.
   const unitItems = items.filter((i) => i.pricing_model === 'unit');
+
+  // Grouped the same way as the trip planner's basket checklist (by group,
+  // then category) so a 60-item dropdown isn't one giant flat alphabetical
+  // wall of text.
+  const itemGroups = GROUP_ORDER.map((groupName) => {
+    const groupItems = unitItems.filter((i) => i.group_name === groupName);
+    const categories = [...new Set(groupItems.map((i) => i.category))];
+    return {
+      name: groupName,
+      categories: categories.map((cat) => ({
+        name: cat,
+        items: groupItems.filter((i) => i.category === cat)
+      }))
+    };
+  }).filter((g) => g.categories.length > 0);
 
   const [sourceCountryId, setSourceCountryId] = useState(countries[0] ? String(countries[0].id) : '');
   const [destCountryId, setDestCountryId] = useState(countries[1] ? String(countries[1].id) : '');
@@ -60,9 +82,15 @@ export default function SingleItemConverter({ countries, items }) {
         <div className="field">
           <label htmlFor="item">Item</label>
           <select id="item" value={itemId} onChange={(e) => setItemId(e.target.value)}>
-            {unitItems.map((i) => (
-              <option key={i.id} value={i.id}>{i.name} ({i.category})</option>
-            ))}
+            {itemGroups.map((group) =>
+              group.categories.map((cat) => (
+                <optgroup key={`${group.name}-${cat.name}`} label={`${group.name} — ${cat.name}`}>
+                  {cat.items.map((i) => (
+                    <option key={i.id} value={i.id}>{i.name}</option>
+                  ))}
+                </optgroup>
+              ))
+            )}
           </select>
         </div>
 

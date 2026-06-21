@@ -55,11 +55,7 @@ export function getExpenseStatus(percentageDifference) {
   return '🔴 Very Expensive';
 }
 
-// Thresholds are a starting guess, not a tuned/validated scale.
+// Budget is the 100% baseline: at or under it is in-budget, over it isn't.
 export function getIncomeStatus(pctOfIncome) {
-  if (pctOfIncome < 5) return '🟢 Very Affordable';
-  if (pctOfIncome < 15) return '🟡 Affordable';
-  if (pctOfIncome < 30) return '⚪ Moderate';
-  if (pctOfIncome < 50) return '🟠 Stretching';
-  return '🔴 Unaffordable';
+  return pctOfIncome <= 100 ? '🟢 Within Budget' : '🔴 Over Budget';
 }

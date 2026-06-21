@@ -2,9 +2,21 @@ import { useEffect, useState } from 'react';
 import { estimateTrip } from './api.js';
 import { loadTripState, saveTripState, clearTripState } from './tripStorage.js';
 import { countryFlag } from './flags.js';
-import StatusBadge from './StatusBadge.jsx';
 import ProgressBar from './ProgressBar.jsx';
 import BasketChecklist from './BasketChecklist.jsx';
+
+// Budget is treated as the 100% baseline: a positive delta is budget left
+// over, a negative delta is how far over budget the trip would run.
+function budgetDeltaLabel(pctOfBudget) {
+  const delta = Math.round((100 - pctOfBudget) * 100) / 100;
+  return delta >= 0 ? `+${delta}%` : `${delta}%`;
+}
+
+// Large amounts (e.g. millions of IDR/VND) blow out the table's column
+// width with raw decimals — round and add separators once over 1000.
+function formatAmount(value) {
+  return value >= 1000 ? Math.round(value).toLocaleString() : value;
+}
 
 export default function TripPlanner({ countries, items }) {
   const saved = loadTripState();
@@ -60,7 +72,7 @@ export default function TripPlanner({ countries, items }) {
       return;
     }
     if (!monthlyIncome || Number(monthlyIncome) <= 0) {
-      setError('Enter your monthly income.');
+      setError('Enter your budget.');
       return;
     }
 
@@ -120,30 +132,39 @@ export default function TripPlanner({ countries, items }) {
         <div className="field">
           <label>Trip duration</label>
           <div className="date-range-row">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              aria-label="From"
-            />
-            <span className="date-range-sep">to</span>
-            <input
-              type="date"
-              value={endDate}
-              min={startDate || undefined}
-              onChange={(e) => setEndDate(e.target.value)}
-              aria-label="To"
-            />
+            <div className="date-range-input">
+              <span className="date-range-input-label">From</span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                aria-label="From"
+              />
+            </div>
+            <span className="date-range-sep">→</span>
+            <div className="date-range-input">
+              <span className="date-range-input-label">To</span>
+              <input
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(e) => setEndDate(e.target.value)}
+                aria-label="To"
+              />
+            </div>
           </div>
           {startDate && endDate && (
-            <p className="hint">
-              {nights} night{nights === 1 ? '' : 's'} — newly checked hotel/stay items default to this many nights.
-            </p>
+            <div
+              className="trip-duration-badge"
+              title="Newly checked hotel/stay and per-day items default to this many nights"
+            >
+              🗓️ {nights} night{nights === 1 ? '' : 's'}
+            </div>
           )}
         </div>
 
         <div className="field">
-          <label htmlFor="income">Monthly income</label>
+          <label htmlFor="income">Budget</label>
           <div className="currency-input">
             {homeCurrencySymbol && <span className="currency-symbol">{homeCurrencySymbol}</span>}
             <input
@@ -189,8 +210,9 @@ export default function TripPlanner({ countries, items }) {
           <p className="result-legend">
             Ranked from most to least affordable for you. <strong>Basket cost</strong> is what you
             checked, priced in their currency. <strong>Home-equivalent</strong> converts that to your
-            currency at the real exchange rate — what it actually costs you. <strong>% of income</strong>{' '}
-            is how much of one month's income the trip would use.
+            currency at the real exchange rate — what it actually costs you. <strong>Budget</strong>{' '}
+            treats what you entered as 100% — a <strong>+</strong> means you'd have that much of
+            your budget left over, a <strong>−</strong> means you'd go over budget by that much.
           </p>
 
           <div className="table-scroll">
@@ -200,8 +222,7 @@ export default function TripPlanner({ countries, items }) {
                   <th title="The country you're considering">Destination</th>
                   <th title="Total cost of your checked items, priced in that country's own currency">Basket cost</th>
                   <th title="That cost converted to your home currency at the real exchange rate — what it actually costs you">Home-equivalent</th>
-                  <th title="The home-equivalent cost as a share of the monthly income you entered">% of income</th>
-                  <th title="A quick read on affordability, from Very Affordable to Unaffordable">Status</th>
+                  <th title="Your budget left over (+) or exceeded (−) after this trip">Budget +/−</th>
                 </tr>
               </thead>
               <tbody>
@@ -211,15 +232,16 @@ export default function TripPlanner({ countries, items }) {
                       <span className="flag">{countryFlag(countries.find((c) => c.id === d.country_id)?.country_code)}</span>
                       {d.country_name}
                     </td>
-                    <td>{d.currency_code} {d.basket_total_dest_currency}</td>
-                    <td>{result.home_country.currency_code} {d.basket_total_home_equivalent}</td>
+                    <td>{d.currency_code} {formatAmount(d.basket_total_dest_currency)}</td>
+                    <td>{result.home_country.currency_code} {formatAmount(d.basket_total_home_equivalent)}</td>
                     <td>
                       <div className="pct-cell">
-                        <span>{d.pct_of_income}%</span>
-                        <ProgressBar pct={d.pct_of_income} statusText={d.income_status} />
+                        <span className={d.pct_of_income > 100 ? 'budget-over' : 'budget-under'}>
+                          {budgetDeltaLabel(d.pct_of_income)}
+                        </span>
+                        <ProgressBar pct={d.pct_of_income} />
                       </div>
                     </td>
-                    <td><StatusBadge text={d.income_status} /></td>
                   </tr>
                 ))}
               </tbody>

@@ -1,4 +1,4 @@
-# Multi-Country Purchasing Power Converter
+# Purchase Parity Converter
 ## Project Planning Document
 
 ---

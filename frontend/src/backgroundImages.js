@@ -16,7 +16,11 @@ export const backgroundImages = [
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Hiking_trail_at_N%C3%A1mafjall_Mountain%2C_Iceland%2C_20240716_1139_1370.jpg/1920px-Hiking_trail_at_N%C3%A1mafjall_Mountain%2C_Iceland%2C_20240716_1139_1370.jpg'
   },
   {
-    label: 'food',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Thana_fine_dining_interior_dining.png'
+    label: 'blossom',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Battersea_Park%2C_Cherry_blossom%2C_Cherry_tree_avenue.jpg/1920px-Battersea_Park%2C_Cherry_blossom%2C_Cherry_tree_avenue.jpg'
+  },
+  {
+    label: 'train',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Kuranda_Scenic_Railway_on_top_of_a_bridge.jpg/1920px-Kuranda_Scenic_Railway_on_top_of_a_bridge.jpg'
   }
 ];

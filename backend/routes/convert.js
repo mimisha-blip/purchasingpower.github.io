@@ -63,8 +63,15 @@ router.post('/', (req, res) => {
             const sourceResolved = resolvePrice(knownPrices, sourceCountry);
             const destResolved = resolvePrice(knownPrices, destCountry);
 
-            // PPP Conversion Logic
-            const destPriceInSourceCurrency = convertPrice(destResolved.price, destCountry.ppp_index, sourceCountry.ppp_index);
+            // Convert the destination price to source currency using the real
+            // market exchange rate, not the PPP index. PPP is used above (via
+            // resolvePrice) to *estimate* a missing local price from a known
+            // anchor — but converting that estimate back to source currency
+            // via PPP again would cancel the destination's own PPP index out
+            // of the equation entirely, making every non-anchor destination
+            // collapse to the same percentage difference. The market rate is
+            // what actually differs country to country for this purpose.
+            const destPriceInSourceCurrency = convertPrice(destResolved.price, destCountry.exchange_rate, sourceCountry.exchange_rate);
             const pppRatio = destCountry.ppp_index / sourceCountry.ppp_index;
             const percentageDifference = ((destPriceInSourceCurrency - sourceResolved.price) / sourceResolved.price) * 100;
             const monthlyEstimate = destPriceInSourceCurrency * 30; // Monthly estimate
