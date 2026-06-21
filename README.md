@@ -10,7 +10,7 @@ People planning international trips need a clearer way to understand real-world 
 
 ## Solution
 
-Purchase Parity Converter is a web app that adjusts travel and item costs using purchasing power parity (PPP). Instead of only converting currencies, it shows what a price feels like in the user's home country and helps estimate realistic trip budgets.
+Purchase Parity Converter is a web app that adjusts travel and item costs using purchasing power parity (PPP). Instead of only converting currencies, it adds an Insight Layer that explains what a price feels like in the user's home country and whether it is meaningfully cheaper, similar, or more expensive than the home benchmark.
 
 The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, PPP comparison, and a simple affordability indicator.
 
@@ -19,7 +19,7 @@ The MVP is intentionally focused: 10 high-interest countries, 10 common travel i
 1. Select a home country and destination country from the MVP country set.
 2. Pick one of 10 common travel items.
 3. The backend combines item prices, exchange rates, and PPP data.
-4. The frontend displays a home-equivalent cost, PPP comparison, and affordability indicator.
+4. The frontend displays a home-equivalent cost, PPP comparison, affordability indicator, and plain-English insight.
 
 Core calculation:
 
@@ -32,6 +32,7 @@ Example:
 ```text
 Coffee in the USA = $4.50
 PPP-adjusted equivalent in India = Rs91
+Insight: A USD 4.50 coffee in the United States feels similar to paying INR 91 in India. Compared with the typical India price, it is 1.8x more expensive.
 ```
 
 ## Tech Stack
@@ -40,6 +41,7 @@ PPP-adjusted equivalent in India = Rs91
 - Backend: Node.js, Express
 - Database: SQLite
 - MVP data: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
+- Insight Layer: plain-English interpretation of PPP and affordability results
 - Data model: countries, items, prices, PPP indexes, exchange rates
 - API routes: countries, items, prices, single-item conversion, trip planning
 - Version control and hosting: GitHub

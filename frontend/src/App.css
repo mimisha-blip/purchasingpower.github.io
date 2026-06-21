@@ -532,6 +532,31 @@ button.secondary:hover {
   color: #1e293b;
 }
 
+.insight-card {
+  margin-top: 14px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #fff7ed 100%);
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+}
+
+.insight-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #9a3412;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
 .result-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

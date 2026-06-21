@@ -28,6 +28,7 @@ Phase 1: Basic Conversion
 ├── Item selector for 10 common travel items
 ├── PPP comparison calculation
 ├── Affordability indicator
+├── Insight Layer with plain-English interpretation
 ├── Display home-equivalent price
 └── Mobile responsive UI
 ```
@@ -37,6 +38,7 @@ Phase 1: Basic Conversion
 - 10 common travel items: coffee/tea, bottled water, snack, sit-down meal, fast food, groceries, public transit, taxi/rideshare, local SIM card, budget hotel
 - PPP comparison between home and destination country
 - Affordability indicator: cheap, similar, expensive, or very expensive
+- Insight Layer: explain what the converted price means in human terms, not just numbers
 - No user accounts
 - No image recognition (Phase 2+)
 - Basic UI (no fancy design)
@@ -54,6 +56,7 @@ Phase 1: Basic Conversion
   - Default: "USA $4.50 coffee = feels like ₹91 in India" (PPP-adjusted)
   - Shows % cheaper/expensive vs home
   - Shows affordability indicator
+  - Shows insight sentence: "A $4.50 coffee in the US feels similar to paying ₹91 in India. Compared with the typical India price, it is 1.8x more expensive."
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 

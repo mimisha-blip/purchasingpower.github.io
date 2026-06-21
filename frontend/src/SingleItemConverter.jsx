@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { convert } from './api.js';
 import { countryFlag } from './flags.js';
 import StatusBadge from './StatusBadge.jsx';
+import { buildInsight } from './insightLayer.js';
 
 const GROUP_ORDER = [
   'Daily essentials',
@@ -113,6 +114,10 @@ export default function SingleItemConverter({ countries, items }) {
           </div>
           <h2>{result.item}</h2>
           <StatusBadge text={result.expense_status} />
+          <div className="insight-card">
+            <span className="insight-label">Insight Layer</span>
+            <p>{buildInsight(result)}</p>
+          </div>
           <div className="result-grid">
             <div>
               <span className="label">Price in {result.dest_country}</span>
