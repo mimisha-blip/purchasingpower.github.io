@@ -45,14 +45,43 @@ export function buildTravelPriceAdvice(input) {
   const convertedPrice = input.destinationPrice * input.exchangeRate;
   const homeRangeAverage = (input.homeTypicalRange.min + input.homeTypicalRange.max) / 2;
   const feelsExpensiveAtHome = input.affordabilityScore > homeRangeAverage;
+  const destinationPrice = formatAmount(input.destinationCurrency, input.destinationPrice);
+  const convertedAmount = formatAmount(input.homeCurrency, convertedPrice);
+  const affordabilityAmount = formatAmount(input.homeCurrency, input.affordabilityScore);
+  const destinationRange = formatRange(input.destinationCurrency, input.destinationTypicalRange);
+  const homeRange = formatRange(input.homeCurrency, input.homeTypicalRange);
+  const homeFeel = feelsExpensiveAtHome ? 'expensive' : 'reasonable';
+  const summary = `It is not a scam price, but it is ${homeFeel} compared with ${countryAdjective(input.homeCountry)} daily food costs.`;
 
   return {
     verdict: sentenceCase(localVerdict),
-    conversion: `${formatAmount(input.destinationCurrency, input.destinationPrice)} is about ${formatAmount(input.homeCurrency, convertedPrice)} by currency conversion.`,
-    affordability: `For someone from ${input.homeCountry}, it may feel closer to spending around ${formatAmount(input.homeCurrency, input.affordabilityScore)}.`,
-    localContext: `In ${input.destinationCity}, a typical ${input.item} is around ${formatRange(input.destinationCurrency, input.destinationTypicalRange)}, so this is ${localVerdict}.`,
-    homeContext: `Compared with a typical ${input.item} in ${input.homeCountry} at ${formatRange(input.homeCurrency, input.homeTypicalRange)}, it will still feel ${feelsExpensiveAtHome ? 'expensive' : 'reasonable'} against everyday food costs at home.`,
-    summary: `It is not a scam price, but it is ${feelsExpensiveAtHome ? 'expensive' : 'reasonable'} compared with ${countryAdjective(input.homeCountry)} daily food costs.`
+    conversion: `${destinationPrice} is about ${convertedAmount} by currency conversion.`,
+    affordability: `For someone from ${input.homeCountry}, it may feel closer to spending around ${affordabilityAmount}.`,
+    localContext: `In ${input.destinationCity}, a typical ${input.item} is around ${destinationRange}, so this is ${localVerdict}.`,
+    homeContext: `Compared with a typical ${input.item} in ${input.homeCountry} at ${homeRange}, it will still feel ${homeFeel} against everyday food costs at home.`,
+    summary,
+    steps: [
+      {
+        title: 'Convert the price',
+        detail: `${destinationPrice} is about ${convertedAmount} at the exchange rate.`
+      },
+      {
+        title: 'Calculate the feels-like value',
+        detail: `For someone from ${input.homeCountry}, this feels closer to ${affordabilityAmount}.`
+      },
+      {
+        title: 'Check the local range',
+        detail: `A typical ${input.item} in ${input.destinationCity} is ${destinationRange}, so ${destinationPrice} is ${localVerdict}.`
+      },
+      {
+        title: 'Compare with home prices',
+        detail: `A typical ${input.item} in ${input.homeCountry} is ${homeRange}, so ${affordabilityAmount} feels ${homeFeel} at home.`
+      },
+      {
+        title: 'Give the verdict',
+        detail: summary
+      }
+    ]
   };
 }
 

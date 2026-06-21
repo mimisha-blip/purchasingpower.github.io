@@ -23,33 +23,6 @@ const NUMERIC_FIELDS = new Set([
   'home_typical_max'
 ]);
 
-const METRIC_GUIDE = [
-  {
-    name: 'Price',
-    detail: 'The amount shown by the shop, menu, ticket, or receipt in the destination currency.'
-  },
-  {
-    name: 'Currency conversion',
-    detail: 'What that price becomes in your home currency using the exchange rate.'
-  },
-  {
-    name: 'Travel Affordability Score',
-    detail: 'The "feels like" amount in your home currency after adjusting for local affordability.'
-  },
-  {
-    name: 'Local price range',
-    detail: 'The normal low-to-high price for the same item in the destination city.'
-  },
-  {
-    name: 'Home price range',
-    detail: 'The normal low-to-high price for the same item in your home country.'
-  },
-  {
-    name: 'Verdict',
-    detail: 'The final answer: cheap, normal, or expensive, with scam-risk context when useful.'
-  }
-];
-
 function toPayload(form) {
   return Object.fromEntries(
     Object.entries(form).map(([key, value]) => [
@@ -103,25 +76,19 @@ export default function TravelPriceAdvisor({ countries }) {
   return (
     <>
       <form onSubmit={handleSubmit} className="convert-form">
-        <div className="advisor-question">
-          Is {destinationCountry?.currency_code || ''} {form.destination_price || '0'} for {form.item || 'this item'} in {form.destination_city || 'this city'} expensive for someone from {homeCountry?.country_name || 'home'}?
+        <div className="advisor-hero">
+          <span>Ask the advisor</span>
+          <strong>
+            Is {destinationCountry?.currency_code || ''} {form.destination_price || '0'} for {form.item || 'this item'} in {form.destination_city || 'this city'} expensive for someone from {homeCountry?.country_name || 'home'}?
+          </strong>
         </div>
 
-        <div className="score-explainer">
-          <strong>Metric guide</strong>
-          <span>
-            The advisor separates what you pay from what the price feels like, then compares both against normal local and home-country ranges.
-          </span>
-        </div>
-
-        <div className="metric-guide">
-          {METRIC_GUIDE.map((metric) => (
-            <div key={metric.name}>
-              <strong>{metric.name}</strong>
-              <span>{metric.detail}</span>
-            </div>
-          ))}
-        </div>
+        <ol className="advisor-process">
+          <li>Convert the price into your home currency.</li>
+          <li>Calculate the Travel Affordability Score: what it feels like at home.</li>
+          <li>Compare the price with local and home-country ranges.</li>
+          <li>Give a simple verdict.</li>
+        </ol>
 
         <div className="advisor-grid">
           <div className="field">
@@ -156,7 +123,7 @@ export default function TravelPriceAdvisor({ countries }) {
 
         <div className="advisor-ranges">
           <div className="field">
-            <label>Typical {form.item || 'item'} in {form.destination_city || 'destination'}</label>
+            <label>Normal range in {form.destination_city || 'destination'}</label>
             <div className="range-row">
               <input type="number" min="0" step="any" value={form.destination_typical_min} onChange={(e) => updateField('destination_typical_min', e.target.value)} aria-label="Destination typical minimum" />
               <span>to</span>
@@ -164,7 +131,7 @@ export default function TravelPriceAdvisor({ countries }) {
             </div>
           </div>
           <div className="field">
-            <label>Typical {form.item || 'item'} in {homeCountry?.country_name || 'home'}</label>
+            <label>Normal range in {homeCountry?.country_name || 'home'}</label>
             <div className="range-row">
               <input type="number" min="0" step="any" value={form.home_typical_min} onChange={(e) => updateField('home_typical_min', e.target.value)} aria-label="Home typical minimum" />
               <span>to</span>
@@ -184,23 +151,30 @@ export default function TravelPriceAdvisor({ countries }) {
         <section className="result advisor-result fade-in">
           <span className="insight-label">Travel Price Advisor</span>
           <h2>{advice.verdict}</h2>
+          <strong className="advisor-summary">{advice.summary}</strong>
           <div className="advisor-facts">
             <div>
-              <span>Exchange rate used</span>
+              <span>Currency conversion</span>
               <strong>1 {destinationCountry?.currency_code} = {homeCountry?.currency_code} {advice.exchange_rate?.toFixed(2)}</strong>
-              <small>Used for currency conversion: the amount you would pay after exchanging money.</small>
+              <small>What the price becomes after exchange rate conversion.</small>
             </div>
             <div>
               <span>Travel Affordability Score</span>
               <strong>{homeCountry?.currency_code} {advice.affordability_score?.toFixed(2)}</strong>
-              <small>The "feels like" value in your home economy.</small>
+              <small>What this feels like in your home economy.</small>
             </div>
           </div>
-          <p>{advice.conversion}</p>
-          <p>{advice.affordability}</p>
-          <p>{advice.localContext}</p>
-          <p>{advice.homeContext}</p>
-          <strong>{advice.summary}</strong>
+          <div className="advisor-steps">
+            {advice.steps.map((step, index) => (
+              <div key={step.title} className="advisor-step">
+                <span>{index + 1}</span>
+                <div>
+                  <strong>{step.title}</strong>
+                  <p>{step.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       )}
     </>
