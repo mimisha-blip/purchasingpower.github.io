@@ -61,7 +61,7 @@ Phase 1: Basic Conversion
   - Shows % cheaper/expensive vs home
   - Shows affordability indicator
   - Shows insight sentence: "A $5 coffee in the US converts to ₹430, but its Travel Affordability Score feels like spending ₹90 in India. Verdict: Normal local pricing."
-  - Shows advisor answer: "$25 is normal for lunch in New York, but for someone from India it may feel like spending around ₹500."
+  - Shows advisor answer: "$25 is normal for lunch in the USA, but for someone from India it may feel like spending around ₹500."
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 
@@ -157,7 +157,7 @@ Endpoints:
 ├── GET /api/items?country=IN&category=Food
 │   └── Returns items in specific country/category
 ├── POST /api/advisor/price
-│   ├── Input: home_country_id, destination_country_id, item price, local ranges
+│   ├── Input: home_country_id, destination_country_id, item, destination price
 │   └── Output: currency conversion, Travel Affordability Score, verdict, explanation
 ├── GET /api/item-search?q=coffee
 │   └── Fuzzy search for items

@@ -3,24 +3,15 @@ import { advisePrice } from './api.js';
 
 const DEFAULT_FORM = {
   item: 'lunch',
-  destination_city: 'New York',
   destination_country_id: '',
   home_country_id: '',
-  destination_price: '25',
-  destination_typical_min: '18',
-  destination_typical_max: '30',
-  home_typical_min: '150',
-  home_typical_max: '300'
+  destination_price: '25'
 };
 
 const NUMERIC_FIELDS = new Set([
   'destination_country_id',
   'home_country_id',
-  'destination_price',
-  'destination_typical_min',
-  'destination_typical_max',
-  'home_typical_min',
-  'home_typical_max'
+  'destination_price'
 ]);
 
 function toPayload(form) {
@@ -79,29 +70,25 @@ export default function TravelPriceAdvisor({ countries }) {
         <div className="advisor-hero">
           <span>Ask the advisor</span>
           <strong>
-            Is {destinationCountry?.currency_code || ''} {form.destination_price || '0'} for {form.item || 'this item'} in {form.destination_city || 'this city'} expensive for someone from {homeCountry?.country_name || 'home'}?
+            Is {destinationCountry?.currency_code || ''} {form.destination_price || '0'} for {form.item || 'this item'} expensive for someone from {homeCountry?.country_name || 'home'}?
           </strong>
         </div>
 
         <ol className="advisor-process">
-          <li>Convert the price into your home currency.</li>
-          <li>Calculate the Travel Affordability Score: what it feels like at home.</li>
-          <li>Compare the price with local and home-country ranges.</li>
-          <li>Give a simple verdict.</li>
+          <li>You enter the item and the price you saw.</li>
+          <li>The app fills exchange rates and normal ranges.</li>
+          <li>It calculates what that price feels like at home.</li>
+          <li>You get a simple cheap, normal, or expensive verdict.</li>
         </ol>
 
         <div className="advisor-grid">
           <div className="field">
-            <label htmlFor="advisor-item">Item</label>
+            <label htmlFor="advisor-item">Item you want to check</label>
             <input id="advisor-item" value={form.item} onChange={(e) => updateField('item', e.target.value)} />
           </div>
           <div className="field">
-            <label htmlFor="advisor-price">Price</label>
+            <label htmlFor="advisor-price">Price you saw</label>
             <input id="advisor-price" type="number" min="0" step="any" value={form.destination_price} onChange={(e) => updateField('destination_price', e.target.value)} />
-          </div>
-          <div className="field">
-            <label htmlFor="advisor-city">City</label>
-            <input id="advisor-city" value={form.destination_city} onChange={(e) => updateField('destination_city', e.target.value)} />
           </div>
           <div className="field">
             <label htmlFor="advisor-destination">Destination country</label>
@@ -118,25 +105,6 @@ export default function TravelPriceAdvisor({ countries }) {
                 <option key={c.id} value={c.id}>{c.country_name}</option>
               ))}
             </select>
-          </div>
-        </div>
-
-        <div className="advisor-ranges">
-          <div className="field">
-            <label>Normal range in {form.destination_city || 'destination'}</label>
-            <div className="range-row">
-              <input type="number" min="0" step="any" value={form.destination_typical_min} onChange={(e) => updateField('destination_typical_min', e.target.value)} aria-label="Destination typical minimum" />
-              <span>to</span>
-              <input type="number" min="0" step="any" value={form.destination_typical_max} onChange={(e) => updateField('destination_typical_max', e.target.value)} aria-label="Destination typical maximum" />
-            </div>
-          </div>
-          <div className="field">
-            <label>Normal range in {homeCountry?.country_name || 'home'}</label>
-            <div className="range-row">
-              <input type="number" min="0" step="any" value={form.home_typical_min} onChange={(e) => updateField('home_typical_min', e.target.value)} aria-label="Home typical minimum" />
-              <span>to</span>
-              <input type="number" min="0" step="any" value={form.home_typical_max} onChange={(e) => updateField('home_typical_max', e.target.value)} aria-label="Home typical maximum" />
-            </div>
           </div>
         </div>
 

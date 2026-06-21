@@ -16,11 +16,11 @@ The MVP is intentionally focused: 10 high-interest countries, 10 common travel i
 
 ## How It Works
 
-1. Select a home country and destination country from the MVP country set.
-2. Pick one of 10 common travel items.
-3. The backend combines item prices, exchange rates, and purchasing-power data.
+1. Enter the item and the price seen while traveling.
+2. Select the destination country and home country.
+3. The backend fills exchange rates, normal price ranges, and purchasing-power data.
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
-5. The Travel Price Advisor answers questions like, "Is $25 for lunch in New York expensive for someone from India?" using stored exchange rates, local price ranges, and home-country affordability context.
+5. The Travel Price Advisor answers questions like, "Is $25 for lunch in the USA expensive for someone from India?" using stored exchange rates, local price ranges, and home-country affordability context.
 
 Core calculation:
 
@@ -48,8 +48,8 @@ The advisor explains the answer step by step:
 Advisor example:
 
 ```text
-Question: Is $25 for lunch in New York expensive for someone from India?
-Answer: $25 is normal for lunch in New York, but for someone from India it may feel like spending around Rs500. It is not a scam price, but it is expensive compared with Indian daily food costs.
+Question: Is $25 for lunch in the USA expensive for someone from India?
+Answer: $25 is normal for lunch in the USA, but for someone from India it may feel like spending around Rs500. It is not a scam price, but it is expensive compared with Indian daily food costs.
 ```
 
 ## Tech Stack

@@ -40,6 +40,42 @@ function countryAdjective(country) {
   return adjectives[country] || country;
 }
 
+const DEFAULT_PRICE_CONTEXT = {
+  lunch: {
+    destinationTypicalRange: { USD: { min: 18, max: 30 } },
+    homeTypicalRange: { INR: { min: 150, max: 300 } }
+  },
+  coffee: {
+    destinationTypicalRange: { USD: { min: 4, max: 7 } },
+    homeTypicalRange: { INR: { min: 50, max: 150 } }
+  },
+  taxi: {
+    destinationTypicalRange: { USD: { min: 12, max: 25 } },
+    homeTypicalRange: { INR: { min: 100, max: 300 } }
+  }
+};
+
+function fallbackRange(currency, type) {
+  if (currency === 'USD') return type === 'destination' ? { min: 10, max: 30 } : { min: 10, max: 30 };
+  if (currency === 'INR') return { min: 100, max: 300 };
+  return { min: 10, max: 30 };
+}
+
+export function getDefaultPriceContext({ item, destinationCurrency, homeCurrency }) {
+  const key = item.toLowerCase().includes('coffee')
+    ? 'coffee'
+    : item.toLowerCase().includes('taxi')
+      ? 'taxi'
+      : 'lunch';
+  const context = DEFAULT_PRICE_CONTEXT[key];
+
+  return {
+    destinationCity: 'the destination',
+    destinationTypicalRange: context.destinationTypicalRange[destinationCurrency] || fallbackRange(destinationCurrency, 'destination'),
+    homeTypicalRange: context.homeTypicalRange[homeCurrency] || fallbackRange(homeCurrency, 'home')
+  };
+}
+
 export function buildTravelPriceAdvice(input) {
   const localVerdict = classifyAgainstRange(input.destinationPrice, input.destinationTypicalRange);
   const convertedPrice = input.destinationPrice * input.exchangeRate;
@@ -94,9 +130,15 @@ export function buildAdvisorInputFromCountries({
   destinationTypicalRange,
   homeTypicalRange
 }) {
+  const defaultContext = getDefaultPriceContext({
+    item,
+    destinationCurrency: destinationCountry.currency_code,
+    homeCurrency: homeCountry.currency_code
+  });
+
   return {
     item,
-    destinationCity,
+    destinationCity: destinationCity || destinationCountry.country_name || defaultContext.destinationCity,
     destinationCountry: destinationCountry.country_name,
     homeCountry: homeCountry.country_name,
     destinationCurrency: destinationCountry.currency_code,
@@ -104,7 +146,7 @@ export function buildAdvisorInputFromCountries({
     homeCurrency: homeCountry.currency_code,
     exchangeRate: homeCountry.exchange_rate / destinationCountry.exchange_rate,
     affordabilityScore: destinationPrice * homeCountry.ppp_index / destinationCountry.ppp_index,
-    destinationTypicalRange,
-    homeTypicalRange
+    destinationTypicalRange: destinationTypicalRange || defaultContext.destinationTypicalRange,
+    homeTypicalRange: homeTypicalRange || defaultContext.homeTypicalRange
   };
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTravelPriceAdvice, buildAdvisorInputFromCountries } from './travelAdvisor.js';
+import { buildTravelPriceAdvice, buildAdvisorInputFromCountries, getDefaultPriceContext } from './travelAdvisor.js';
 
 test('explains whether a New York lunch is normal or expensive for an Indian traveler', () => {
   const advice = buildTravelPriceAdvice({
@@ -74,4 +74,41 @@ test('derives exchange conversion and affordability score from country indexes',
   assert.equal(input.affordabilityScore, 500);
   assert.equal(input.destinationCurrency, 'USD');
   assert.equal(input.homeCurrency, 'INR');
+});
+
+test('builds a complete advisor input when users only provide item, price, and countries', () => {
+  const input = buildAdvisorInputFromCountries({
+    item: 'lunch',
+    destinationCountry: {
+      country_name: 'United States',
+      currency_code: 'USD',
+      exchange_rate: 1,
+      ppp_index: 1
+    },
+    homeCountry: {
+      country_name: 'India',
+      currency_code: 'INR',
+      exchange_rate: 83,
+      ppp_index: 20
+    },
+    destinationPrice: 25
+  });
+
+  assert.equal(input.destinationCity, 'United States');
+  assert.deepEqual(input.destinationTypicalRange, { min: 18, max: 30 });
+  assert.deepEqual(input.homeTypicalRange, { min: 150, max: 300 });
+});
+
+test('provides default ranges for common item context', () => {
+  const context = getDefaultPriceContext({
+    item: 'lunch',
+    destinationCurrency: 'USD',
+    homeCurrency: 'INR'
+  });
+
+  assert.deepEqual(context, {
+    destinationCity: 'the destination',
+    destinationTypicalRange: { min: 18, max: 30 },
+    homeTypicalRange: { min: 150, max: 300 }
+  });
 });
