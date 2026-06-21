@@ -1,6 +1,6 @@
 import express from 'express';
 import { db } from '../server.js';
-import { convertPrice, getExpenseStatus, resolvePrice } from '../utils/ppp.js';
+import { convertPrice, getTravelAffordabilityVerdict, resolvePrice } from '../utils/ppp.js';
 
 const router = express.Router();
 
@@ -8,11 +8,11 @@ const router = express.Router();
  * POST /api/convert
  * Core conversion logic
  * Body: { source_country_id, dest_country_id, item_id }
- * Returns: { original_price, home_equivalent, ppp_ratio, expense_status, monthly_estimate }
+ * Returns conversion details plus a Travel Affordability Score.
  *
  * If the item has no direct price row for a country, its price is
- * PPP-scaled from whichever country does have one (same fallback the trip
- * planner uses) — only fails if the item has no price data anywhere.
+ * purchasing-power-scaled from whichever country does have one (same fallback
+ * the trip planner uses) — only fails if the item has no price data anywhere.
  */
 router.post('/', (req, res) => {
   const { source_country_id, dest_country_id, item_id } = req.body;
@@ -64,18 +64,15 @@ router.post('/', (req, res) => {
             const destResolved = resolvePrice(knownPrices, destCountry);
 
             // Convert the destination price to source currency using the real
-            // market exchange rate, not the PPP index. PPP is used above (via
-            // resolvePrice) to *estimate* a missing local price from a known
-            // anchor — but converting that estimate back to source currency
-            // via PPP again would cancel the destination's own PPP index out
-            // of the equation entirely, making every non-anchor destination
-            // collapse to the same percentage difference. The market rate is
-            // what actually differs country to country for this purpose.
-            const destPriceInSourceCurrency = convertPrice(destResolved.price, destCountry.exchange_rate, sourceCountry.exchange_rate);
-            const pppRatio = destCountry.ppp_index / sourceCountry.ppp_index;
-            const percentageDifference = ((destPriceInSourceCurrency - sourceResolved.price) / sourceResolved.price) * 100;
-            const monthlyEstimate = destPriceInSourceCurrency * 30; // Monthly estimate
-            const expenseStatus = getExpenseStatus(percentageDifference);
+            // market exchange rate, not the affordability index. The index is
+            // used above (via resolvePrice) to estimate a missing local price
+            // from a known anchor. Currency conversion and the Travel
+            // Affordability Score are intentionally shown as separate ideas.
+            const currencyConversionPrice = convertPrice(destResolved.price, destCountry.exchange_rate, sourceCountry.exchange_rate);
+            const travelAffordabilityScore = convertPrice(destResolved.price, destCountry.ppp_index, sourceCountry.ppp_index);
+            const percentageDifference = ((travelAffordabilityScore - sourceResolved.price) / sourceResolved.price) * 100;
+            const monthlyEstimate = currencyConversionPrice * 30; // Monthly estimate
+            const verdict = getTravelAffordabilityVerdict(percentageDifference);
 
             res.json({
               success: true,
@@ -88,14 +85,16 @@ router.post('/', (req, res) => {
                 original_price: Math.round(destResolved.price * 100) / 100,
                 original_price_estimated: destResolved.estimated,
                 original_currency: destCountry.currency_code,
-                home_equivalent_price: Math.round(destPriceInSourceCurrency * 100) / 100,
+                currency_conversion_price: Math.round(currencyConversionPrice * 100) / 100,
+                travel_affordability_score: Math.round(travelAffordabilityScore * 100) / 100,
+                home_equivalent_price: Math.round(travelAffordabilityScore * 100) / 100,
                 home_currency: sourceCountry.currency_code,
                 actual_home_price: Math.round(sourceResolved.price * 100) / 100,
                 actual_home_price_estimated: sourceResolved.estimated,
                 percentage_difference: Math.round(percentageDifference * 100) / 100,
-                expense_status: expenseStatus,
+                verdict,
+                expense_status: verdict,
                 monthly_estimate: Math.round(monthlyEstimate * 100) / 100,
-                ppp_ratio: Math.round(pppRatio * 100) / 100
               }
             });
           }

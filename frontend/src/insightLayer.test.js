@@ -2,38 +2,38 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildInsight } from './insightLayer.js';
 
-test('explains a destination price as a home-equivalent feeling and multiplier', () => {
+test('formats the Travel Affordability Score insight with conversion and verdict', () => {
   const insight = buildInsight({
     item: 'Coffee or tea (1 cup)',
     original_currency: 'USD',
-    original_price: 4.5,
-    dest_country: 'United States',
+    original_price: 5,
+    currency_conversion_price: 430,
     home_currency: 'INR',
-    home_equivalent_price: 91,
+    travel_affordability_score: 90,
     source_country: 'India',
-    actual_home_price: 50
+    verdict: '⚪ Normal local pricing'
   });
 
-  assert.equal(
-    insight,
-    'A USD 4.50 coffee or tea in the United States feels similar to paying INR 91.00 in India. Compared with the typical India price, it is 1.8x more expensive.'
-  );
+  assert.deepEqual(insight, {
+    item: 'Coffee or tea',
+    price: 'USD 5.00',
+    currencyConversion: 'INR 430.00',
+    affordabilityScore: 'Feels like spending INR 90.00 in India',
+    verdict: 'Normal local pricing'
+  });
 });
 
-test('labels near-equal prices as similar instead of forcing a multiplier', () => {
+test('strips emoji from verdict labels without changing plain labels', () => {
   const insight = buildInsight({
     item: 'Bottled water (1.5L)',
     original_currency: 'GBP',
     original_price: 1,
-    dest_country: 'United Kingdom',
+    currency_conversion_price: 108,
     home_currency: 'INR',
-    home_equivalent_price: 21,
+    travel_affordability_score: 21,
     source_country: 'India',
-    actual_home_price: 20
+    verdict: 'Normal local pricing'
   });
 
-  assert.equal(
-    insight,
-    'A GBP 1.00 bottled water in the United Kingdom feels similar to paying INR 21.00 in India. Compared with the typical India price, it is about the same.'
-  );
+  assert.equal(insight.verdict, 'Normal local pricing');
 });

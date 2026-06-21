@@ -9,7 +9,7 @@
 Travelers often judge whether something is "expensive" or "cheap" based only on currency conversion, which can lead to poor spending decisions. A $5 coffee may sound expensive when converted to ₹430, but it may be completely normal for that country.
 
 **Solution:**
-A web/mobile app that converts prices between countries using PPP adjustments, helping travelers understand what items ACTUALLY cost relative to their home economy.
+A web/mobile app that converts prices between countries and adds a Travel Affordability Score, helping travelers understand what items actually feel like relative to their home economy.
 
 **Target Users:**
 - International travelers planning trips
@@ -26,17 +26,17 @@ A web/mobile app that converts prices between countries using PPP adjustments, h
 Phase 1: Basic Conversion
 ├── Country selector for 10 high-interest countries
 ├── Item selector for 10 common travel items
-├── PPP comparison calculation
+├── Travel Affordability Score calculation
 ├── Affordability indicator
 ├── Insight Layer with plain-English interpretation
-├── Display home-equivalent price
+├── Display currency conversion and affordability score
 └── Mobile responsive UI
 ```
 
 **MVP Scope:**
 - Top 10 countries: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
 - 10 common travel items: coffee/tea, bottled water, snack, sit-down meal, fast food, groceries, public transit, taxi/rideshare, local SIM card, budget hotel
-- PPP comparison between home and destination country
+- Travel Affordability Score between home and destination country
 - Affordability indicator: cheap, similar, expensive, or very expensive
 - Insight Layer: explain what the converted price means in human terms, not just numbers
 - No user accounts
@@ -50,13 +50,13 @@ Phase 1: Basic Conversion
 
 ### Phase 1: MVP (Weeks 1-2)
 - [ ] Basic UI: country selection from top 10 countries + item selection
-- [ ] Backend: PPP conversion logic
+- [ ] Backend: Travel Affordability Score logic
 - [ ] Database: 10 common items with prices anchored for the MVP country set
 - [ ] Display: **Smart & Simple**
-  - Default: "USA $4.50 coffee = feels like ₹91 in India" (PPP-adjusted)
+  - Default: "$5 coffee in the US converts to ₹430, but the Travel Affordability Score feels like spending ₹90 in India"
   - Shows % cheaper/expensive vs home
   - Shows affordability indicator
-  - Shows insight sentence: "A $4.50 coffee in the US feels similar to paying ₹91 in India. Compared with the typical India price, it is 1.8x more expensive."
+  - Shows insight sentence: "A $5 coffee in the US converts to ₹430, but its Travel Affordability Score feels like spending ₹90 in India. Verdict: Normal local pricing."
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 
@@ -88,11 +88,11 @@ Phase 1: Basic Conversion
 - Update frequency: Daily
 - Need: Real-time conversion INR → USD, GBP, etc.
 
-#### B. PPP Index
-- Source: World Bank, IMF, OECD
-- What: PPP ratio between countries
-- Example: 1 USD = ₹13 (exchange) but = ₹20 (PPP in India)
-- Calculation: Cost in home currency = Destination price × PPP ratio
+#### B. Affordability Index
+- Source: World Bank, IMF, OECD purchasing-power datasets
+- What: Affordability ratio between countries
+- Example: $4.50 converts to about ₹372, but the Travel Affordability Score can feel closer to ₹91 in India
+- Calculation: Travel Affordability Score = Destination price × local affordability ratio
 
 #### C. Product Prices Database
 - What: Typical prices of items in each country
@@ -116,7 +116,7 @@ Phase 1: Basic Conversion
   country_code: "IN",
   country_name: "India",
   currency: "INR",
-  ppp_index: 20,  // vs USD
+  affordability_index: 20,  // vs USD baseline
   exchange_rate: 83.5  // INR per USD
 }
 ```
@@ -148,12 +148,12 @@ State Management: Context API or Zustand (simple app, no Redux needed)
 Technology: Node.js + Express.js (or Python + Flask)
 Endpoints:
 ├── GET /api/countries
-│   └── Returns the 10 MVP countries with PPP & exchange rate data
+│   └── Returns the 10 MVP countries with affordability & exchange rate data
 ├── GET /api/items?country=IN&category=Food
 │   └── Returns items in specific country/category
 ├── POST /api/convert
 │   ├── Input: source_country, dest_country, item_id
-│   └── Output: original_price, home_equivalent, ppp_ratio
+│   └── Output: original_price, currency_conversion_price, travel_affordability_score, verdict
 ├── GET /api/item-search?q=coffee
 │   └── Fuzzy search for items
 └── POST /api/prices (future: crowdsource prices)
@@ -163,7 +163,7 @@ Endpoints:
 ```
 Technology: PostgreSQL or MongoDB
 Tables:
-├── countries (id, name, code, currency, ppp_index, exchange_rate)
+├── countries (id, name, code, currency, affordability_index, exchange_rate)
 ├── items (id, name, category, description)
 ├── prices (id, item_id, country_id, price, currency, source, updated_at)
 └── user_feedback (optional: id, item_id, country_id, actual_price, user_rating)
@@ -178,16 +178,16 @@ Database: Supabase (PostgreSQL free tier) or MongoDB Atlas
 
 ---
 
-## 6. CORE LOGIC: PPP CONVERSION
+## 6. CORE LOGIC: TRAVEL AFFORDABILITY SCORE
 
 ### Formula
 ```
-HomeEquivalentPrice = DestinationPrice × PPP_Ratio
+TravelAffordabilityScore = DestinationPrice × LocalAffordabilityRatio
 
 Example:
 - Item: Coffee in USA = $4.50
-- PPP_Ratio (USD to INR) = 20
-- HomeEquivalentPrice (in INR) = 4.5 × 20 = ₹90
+- LocalAffordabilityRatio (USD to INR) = 20
+- TravelAffordabilityScore (in INR) = 4.5 × 20 = ₹90
 - Compare to actual: ₹50 in India
 - Conclusion: Coffee is more expensive in the USA, but the indicator explains whether it is cheap, similar, or expensive relative to home.
 ```
@@ -215,7 +215,7 @@ User searches: "coffee"
 ↓
 System shows:
   Brazil coffee: R$12
-  Equivalent: ¥450 (PPP-adjusted)
+  Travel Affordability Score: feels like ¥450
   Actual in Japan: ¥500
   Status: 🟢 10% cheaper!
   
@@ -230,7 +230,7 @@ User sees options: Check another item / View trip calculator
 User: "Trip to USA for 10 days from India"
 ↓
 System shows estimated breakdown:
-  - Food: ~$50/day = ₹2,400/day (PPP) = ₹24,000 total
+  - Food: ~$50/day = ₹2,400/day score = ₹24,000 total
   - Hotel: ~$60/night = ₹2,880/night = ₹28,800 total
   - Transport: ~$100/trip = ₹2,000/trip = ~₹5,000 total
   - Activities: ~$20/day = ₹1,000/day = ₹10,000 total
@@ -254,7 +254,7 @@ User: "Oh! That's overpriced. I'll go to a local café"
 ## 8. DATA SOURCES & COLLECTION STRATEGY
 
 ### MVP Phase (Manual/API):
-1. **PPP Data**: Download from World Bank (one-time, update yearly)
+1. **Affordability Data**: Download purchasing-power data from World Bank (one-time, update yearly)
 2. **Exchange Rates**: `exchangerate-api.com` (free API, update daily)
 3. **Item Prices**: 
    - Manually enter 10 common travel items for the focused MVP country set
@@ -348,7 +348,7 @@ Week 3+: Phase 2 features
 ## 12. DECISIONS FINALIZED ✅
 
 1. **Mobile app or web-only for MVP?** ✅ Web-first, mobile app in Phase 3
-2. **How to handle PPP for countries without official data?** ✅ Keep the MVP to countries with usable PPP data
+2. **How to handle countries without official affordability data?** ✅ Keep the MVP to countries with usable data
 3. **Should we include user income level?** ✅ Not needed for the MVP
 4. **Price update frequency?** ✅ Monthly for MVP, real-time Phase 2+
 5. **Target countries for MVP?** ✅ 10 countries: India, US, UK, Japan, Australia, Canada, Germany, France, Singapore, Brazil

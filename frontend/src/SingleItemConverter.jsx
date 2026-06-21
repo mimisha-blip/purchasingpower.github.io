@@ -104,6 +104,11 @@ export default function SingleItemConverter({ countries, items }) {
 
       {result && (
         <section className="result fade-in">
+          {(() => {
+            const insight = buildInsight(result);
+
+            return (
+              <>
           <div className="destination-banner">
             <img
               src={`https://flagcdn.com/w640/${result.dest_country_code.toLowerCase()}.png`}
@@ -113,10 +118,27 @@ export default function SingleItemConverter({ countries, items }) {
             <div className="destination-banner-caption">📍 {result.dest_country}</div>
           </div>
           <h2>{result.item}</h2>
-          <StatusBadge text={result.expense_status} />
+          <StatusBadge text={result.verdict || result.expense_status} />
           <div className="insight-card">
-            <span className="insight-label">Insight Layer</span>
-            <p>{buildInsight(result)}</p>
+            <span className="insight-label">Travel Affordability Score</span>
+            <div className="insight-metrics">
+              <div>
+                <span>Price</span>
+                <strong>{insight.price}</strong>
+              </div>
+              <div>
+                <span>Currency Conversion</span>
+                <strong>{insight.currencyConversion}</strong>
+              </div>
+              <div>
+                <span>Affordability Score</span>
+                <strong>{insight.affordabilityScore}</strong>
+              </div>
+              <div>
+                <span>Verdict</span>
+                <strong>{insight.verdict}</strong>
+              </div>
+            </div>
           </div>
           <div className="result-grid">
             <div>
@@ -127,21 +149,24 @@ export default function SingleItemConverter({ countries, items }) {
               </span>
             </div>
             <div>
-              <span className="label">Home-equivalent cost</span>
-              <span className="value">{result.home_currency} {result.home_equivalent_price}</span>
+              <span className="label">Currency conversion</span>
+              <span className="value">{result.home_currency} {result.currency_conversion_price}</span>
             </div>
             <div>
-              <span className="label">Actual price in {result.source_country}</span>
+              <span className="label">Travel Affordability Score</span>
+              <span className="value">{result.home_currency} {result.travel_affordability_score}</span>
+            </div>
+            <div>
+              <span className="label">Typical price in {result.source_country}</span>
               <span className="value">
                 {result.home_currency} {result.actual_home_price}
                 {result.actual_home_price_estimated && <span className="estimated-tag"> estimated</span>}
               </span>
             </div>
-            <div>
-              <span className="label">Difference vs. home</span>
-              <span className="value">{result.percentage_difference > 0 ? '+' : ''}{result.percentage_difference}%</span>
-            </div>
           </div>
+              </>
+            );
+          })()}
         </section>
       )}
     </>

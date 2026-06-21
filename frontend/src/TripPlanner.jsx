@@ -209,7 +209,7 @@ export default function TripPlanner({ countries, items }) {
 
           <p className="result-legend">
             Ranked from most to least affordable for you. <strong>Basket cost</strong> is what you
-            checked, priced in their currency. <strong>Home-equivalent</strong> converts that to your
+            checked, priced in their currency. <strong>Currency conversion</strong> converts that to your
             currency at the real exchange rate — what it actually costs you. <strong>Budget</strong>{' '}
             treats what you entered as 100% — a <strong>+</strong> means you'd have that much of
             your budget left over, a <strong>−</strong> means you'd go over budget by that much.
@@ -221,7 +221,7 @@ export default function TripPlanner({ countries, items }) {
                 <tr>
                   <th title="The country you're considering">Destination</th>
                   <th title="Total cost of your checked items, priced in that country's own currency">Basket cost</th>
-                  <th title="That cost converted to your home currency at the real exchange rate — what it actually costs you">Home-equivalent</th>
+                  <th title="That cost converted to your home currency at the real exchange rate — what it actually costs you">Currency conversion</th>
                   <th title="Your budget left over (+) or exceeded (−) after this trip">Budget +/−</th>
                 </tr>
               </thead>

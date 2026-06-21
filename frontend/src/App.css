@@ -550,11 +550,28 @@ button.secondary:hover {
   letter-spacing: 0.06em;
 }
 
-.insight-card p {
-  margin: 0;
+.insight-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.insight-metrics div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.insight-metrics span {
+  color: #9a3412;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.insight-metrics strong {
   color: #1e293b;
-  font-size: 1rem;
-  line-height: 1.55;
+  font-size: 0.98rem;
+  line-height: 1.35;
 }
 
 .result-grid {
