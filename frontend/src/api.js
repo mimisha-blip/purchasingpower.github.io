@@ -42,3 +42,10 @@ export function estimateTrip(homeCountryId, monthlyIncome, basket, candidateCoun
     })
   });
 }
+
+export function advisePrice(payload) {
+  return request('/advisor/price', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}

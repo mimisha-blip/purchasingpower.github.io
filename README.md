@@ -12,7 +12,7 @@ People planning international trips need a clearer way to understand real-world 
 
 Purchase Parity Converter is a web app that compares travel prices with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what a price feels like in the user's home country and whether it is meaningfully cheaper, similar, or more expensive than the home benchmark.
 
-The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, currency conversion, Travel Affordability Score, and a simple verdict.
+The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor.
 
 ## How It Works
 
@@ -20,6 +20,7 @@ The MVP is intentionally focused: 10 high-interest countries, 10 common travel i
 2. Pick one of 10 common travel items.
 3. The backend combines item prices, exchange rates, and purchasing-power data.
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
+5. The Travel Price Advisor answers questions like, "Is $25 for lunch in New York expensive for someone from India?" using local price ranges and home-country affordability context.
 
 Core calculation:
 
@@ -36,6 +37,13 @@ Travel Affordability Score = Feels like spending Rs90 in India
 Verdict = Normal local pricing
 ```
 
+Advisor example:
+
+```text
+Question: Is $25 for lunch in New York expensive for someone from India?
+Answer: $25 is normal for lunch in New York, but for someone from India it may feel like spending around Rs500. It is not a scam price, but it is expensive compared with Indian daily food costs.
+```
+
 ## Tech Stack
 
 - Frontend: React, Vite, CSS
@@ -43,6 +51,7 @@ Verdict = Normal local pricing
 - Database: SQLite
 - MVP data: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
 - Insight Layer: plain-English interpretation of Travel Affordability Score results
+- Travel Price Advisor: structured AI-style explanation using local range, exchange-rate, and affordability-score data
 - Data model: countries, items, prices, affordability indexes, exchange rates
 - API routes: countries, items, prices, single-item conversion, trip planning
 - Version control and hosting: GitHub

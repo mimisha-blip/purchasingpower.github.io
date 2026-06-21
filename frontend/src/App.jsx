@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCountries, getItems } from './api.js';
 import SingleItemConverter from './SingleItemConverter.jsx';
 import TripPlanner from './TripPlanner.jsx';
+import TravelPriceAdvisor from './TravelPriceAdvisor.jsx';
 import TravelBackdrop from './TravelBackdrop.jsx';
 import './App.css';
 
@@ -59,7 +60,7 @@ export default function App() {
         </header>
 
         <div className="tab-toggle">
-          <div className={`tab-indicator ${activeTab === 'converter' ? 'shift' : ''}`} />
+          <div className={`tab-indicator tab-${activeTab}`} />
           <button
             className={activeTab === 'planner' ? 'active' : ''}
             onClick={() => setActiveTab('planner')}
@@ -72,13 +73,21 @@ export default function App() {
           >
             🔁 Single-Item Converter
           </button>
+          <button
+            className={activeTab === 'advisor' ? 'active' : ''}
+            onClick={() => setActiveTab('advisor')}
+          >
+            Advisor
+          </button>
         </div>
 
         <div key={activeTab} className="tab-panel">
           {activeTab === 'planner' ? (
             <TripPlanner countries={countries} items={items} />
-          ) : (
+          ) : activeTab === 'converter' ? (
             <SingleItemConverter countries={countries} items={items} />
+          ) : (
+            <TravelPriceAdvisor />
           )}
         </div>
       </div>

@@ -29,6 +29,7 @@ Phase 1: Basic Conversion
 ├── Travel Affordability Score calculation
 ├── Affordability indicator
 ├── Insight Layer with plain-English interpretation
+├── Travel Price Advisor for simple question-based explanations
 ├── Display currency conversion and affordability score
 └── Mobile responsive UI
 ```
@@ -39,6 +40,7 @@ Phase 1: Basic Conversion
 - Travel Affordability Score between home and destination country
 - Affordability indicator: cheap, similar, expensive, or very expensive
 - Insight Layer: explain what the converted price means in human terms, not just numbers
+- Travel Price Advisor: answer whether a specific travel price is cheap, normal, or expensive using local and home-country context
 - No user accounts
 - No image recognition (Phase 2+)
 - Basic UI (no fancy design)
@@ -57,6 +59,7 @@ Phase 1: Basic Conversion
   - Shows % cheaper/expensive vs home
   - Shows affordability indicator
   - Shows insight sentence: "A $5 coffee in the US converts to ₹430, but its Travel Affordability Score feels like spending ₹90 in India. Verdict: Normal local pricing."
+  - Shows advisor answer: "$25 is normal for lunch in New York, but for someone from India it may feel like spending around ₹500."
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 
