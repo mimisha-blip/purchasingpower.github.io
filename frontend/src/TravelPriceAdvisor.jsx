@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { advisePrice } from './api.js';
+import { ADVISOR_ITEMS } from './advisorItems.js';
 
 const DEFAULT_FORM = {
-  item: 'lunch',
+  item: 'iPhone',
   destination_country_id: '',
   home_country_id: '',
-  destination_price: '25'
+  destination_price: '999'
 };
 
 const NUMERIC_FIELDS = new Set([
@@ -81,7 +82,11 @@ export default function TravelPriceAdvisor({ countries }) {
         <div className="advisor-grid">
           <div className="field">
             <label htmlFor="advisor-item">Item you want to check</label>
-            <input id="advisor-item" value={form.item} onChange={(e) => updateField('item', e.target.value)} />
+            <select id="advisor-item" value={form.item} onChange={(e) => updateField('item', e.target.value)}>
+              {ADVISOR_ITEMS.map((item) => (
+                <option key={item.value} value={item.value}>{item.label}</option>
+              ))}
+            </select>
           </div>
           <div className="field">
             <label htmlFor="advisor-price">Price you saw</label>

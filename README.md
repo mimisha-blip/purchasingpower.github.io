@@ -12,11 +12,11 @@ People planning international trips need a clearer way to understand real-world 
 
 Purchase Parity Converter is a web app that compares travel prices with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what a price feels like in the user's home country and whether it is meaningfully cheaper, similar, or more expensive than the home benchmark.
 
-The MVP is intentionally focused: 10 high-interest countries, 10 common travel items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor. The single-item converter was removed so the app can focus on advice instead of raw conversion.
+The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor. The single-item converter was removed so the app can focus on advice instead of raw conversion.
 
 ## How It Works
 
-1. Enter the item and the price seen while traveling.
+1. Choose one of 20 common items and enter the price seen while traveling.
 2. Select the destination country and home country.
 3. The backend fills exchange rates, normal price ranges, and purchasing-power data.
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
@@ -42,7 +42,7 @@ The advisor gives a summary-first answer:
 1. A short verdict in plain language.
 2. Currency conversion for the price the traveler entered.
 3. Travel Affordability Score, which is the "feels like" amount at home.
-4. A local comparison using the right item context, such as food, transport, stay, or products.
+4. A local comparison using the right item context, such as food, entertainment, transport, stay, services, or products.
 
 Advisor example:
 

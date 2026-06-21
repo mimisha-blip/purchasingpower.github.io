@@ -1,0 +1,22 @@
+export const ADVISOR_ITEMS = [
+  { value: 'iPhone', label: 'iPhone' },
+  { value: 'Smartphone', label: 'Smartphone' },
+  { value: 'Laptop', label: 'Laptop' },
+  { value: 'Coffee', label: 'Coffee' },
+  { value: 'Lunch', label: 'Lunch' },
+  { value: 'Fast food meal', label: 'Fast food meal' },
+  { value: 'Movie ticket', label: 'Movie ticket' },
+  { value: 'Amusement park ticket', label: 'Amusement park ticket' },
+  { value: 'Museum ticket', label: 'Museum ticket' },
+  { value: 'Taxi ride', label: 'Taxi ride' },
+  { value: 'Public transit ride', label: 'Public transit ride' },
+  { value: 'Car rental', label: 'Car rental' },
+  { value: 'Hotel room', label: 'Hotel room' },
+  { value: 'Hostel bed', label: 'Hostel bed' },
+  { value: 'Bottled water', label: 'Bottled water' },
+  { value: 'Groceries', label: 'Groceries' },
+  { value: 'Local SIM card', label: 'Local SIM card' },
+  { value: 'Sneakers', label: 'Sneakers' },
+  { value: 'T-shirt', label: 'T-shirt' },
+  { value: 'Haircut', label: 'Haircut' }
+];

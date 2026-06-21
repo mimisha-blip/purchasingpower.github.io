@@ -6,17 +6,24 @@ const router = express.Router();
 
 const ITEM_SEARCH_TERMS = [
   { patterns: ['lunch', 'dinner', 'meal', 'food'], term: 'meal' },
+  { patterns: ['fast food'], term: 'Fast food' },
   { patterns: ['coffee', 'tea'], term: 'coffee' },
+  { patterns: ['movie'], term: 'movie' },
+  { patterns: ['amusement', 'theme park'], term: 'amusement' },
+  { patterns: ['museum', 'attraction'], term: 'Museum' },
+  { patterns: ['transit', 'metro', 'bus', 'train'], term: 'transit' },
   { patterns: ['taxi', 'cab', 'ride', 'uber'], term: 'taxi' },
+  { patterns: ['car rental', 'rental car'], term: 'Car rental' },
   { patterns: ['water'], term: 'water' },
   { patterns: ['snack'], term: 'snack' },
   { patterns: ['grocery', 'groceries'], term: 'groceries' },
-  { patterns: ['transit', 'metro', 'bus', 'train'], term: 'transit' },
   { patterns: ['sim', 'data', 'mobile'], term: 'SIM' },
+  { patterns: ['hostel'], term: 'Hostel' },
   { patterns: ['hotel', 'stay', 'room'], term: 'hotel' },
   { patterns: ['iphone', 'phone', 'smartphone'], term: 'phone' },
   { patterns: ['laptop', 'macbook', 'computer'], term: 'laptop' },
-  { patterns: ['shoe', 'sneaker', 'clothes', 'clothing', 'shirt'], term: 'clothing' }
+  { patterns: ['shoe', 'sneaker', 'clothes', 'clothing', 'shirt'], term: 'clothing' },
+  { patterns: ['haircut'], term: 'Haircut' }
 ];
 
 function resolveItemSearchTerm(item) {

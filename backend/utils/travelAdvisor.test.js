@@ -134,3 +134,28 @@ test('returns summary-focused advice without step-by-step output', () => {
 
   assert.equal(Object.hasOwn(advice, 'steps'), false);
 });
+
+test('uses relevant contexts for entertainment and car rental items', () => {
+  const countryPair = {
+    destinationCountry: {
+      country_name: 'United States',
+      currency_code: 'USD',
+      exchange_rate: 1,
+      ppp_index: 1
+    },
+    homeCountry: {
+      country_name: 'India',
+      currency_code: 'INR',
+      exchange_rate: 83,
+      ppp_index: 20
+    }
+  };
+
+  const movie = buildAdvisorInputFromCountries({ ...countryPair, item: 'Movie ticket', destinationPrice: 18 });
+  const amusement = buildAdvisorInputFromCountries({ ...countryPair, item: 'Amusement park ticket', destinationPrice: 120 });
+  const carRental = buildAdvisorInputFromCountries({ ...countryPair, item: 'Car rental', destinationPrice: 70 });
+
+  assert.deepEqual(movie.destinationTypicalRange, { min: 12, max: 25 });
+  assert.deepEqual(amusement.destinationTypicalRange, { min: 60, max: 160 });
+  assert.deepEqual(carRental.destinationTypicalRange, { min: 45, max: 120 });
+});

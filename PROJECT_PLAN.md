@@ -25,7 +25,7 @@ A web/mobile app that converts prices between countries and adds a Travel Afford
 ```
 Phase 1: Basic Conversion
 ├── Country selector for 10 high-interest countries
-├── Item selector for 10 common travel items
+├── Advisor item selector for 20 varied common items
 ├── Travel Affordability Score calculation
 ├── Affordability indicator
 ├── Insight Layer with plain-English interpretation
@@ -36,7 +36,7 @@ Phase 1: Basic Conversion
 
 **MVP Scope:**
 - Top 10 countries: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
-- 10 common travel items: coffee/tea, bottled water, snack, sit-down meal, fast food, groceries, public transit, taxi/rideshare, local SIM card, budget hotel
+- 20 advisor items: iPhone, smartphone, laptop, coffee, lunch, fast food meal, movie ticket, amusement park ticket, museum ticket, taxi ride, public transit ride, car rental, hotel room, hostel bed, bottled water, groceries, local SIM card, sneakers, T-shirt, haircut
 - Travel Affordability Score between home and destination country
 - Affordability indicator: cheap, similar, expensive, or very expensive
 - Insight Layer: explain what the converted price means in human terms, not just numbers
@@ -55,7 +55,7 @@ Phase 1: Basic Conversion
 ### Phase 1: MVP (Weeks 1-2)
 - [ ] Basic UI: country selection from top 10 countries + item selection
 - [ ] Backend: Travel Affordability Score logic
-- [ ] Database: 10 common items with prices anchored for the MVP country set
+- [ ] Database and advisor defaults: 20 varied items with prices or fallback ranges anchored for the MVP country set
 - [ ] Display: **Smart & Simple**
   - Default: "$5 coffee in the US converts to ₹430, but the Travel Affordability Score feels like spending ₹90 in India"
   - Shows % cheaper/expensive vs home
@@ -262,7 +262,7 @@ User: "Oh! That's overpriced. I'll go to a local café"
 1. **Affordability Data**: Download purchasing-power data from World Bank (one-time, update yearly)
 2. **Exchange Rates**: `exchangerate-api.com` (free API, update daily)
 3. **Item Prices**: 
-   - Manually enter 10 common travel items for the focused MVP country set
+   - Add the 20 varied advisor items for the focused MVP country set
    - Sources: Numbeo, Expatica, local research
    - Format: CSV → import to database
 
@@ -344,7 +344,7 @@ Week 3+: Phase 2 features
 - [ ] Converts prices across the 10 MVP countries accurately
 - [ ] UI is intuitive (user can convert in < 30 seconds)
 - [ ] Mobile responsive (web)
-- [ ] 10 common items in database across the MVP country set
+- [ ] 20 varied advisor items covered by database prices or fallback ranges across the MVP country set
 - [ ] Both "Simple" and "Detailed" views working
 - [ ] Affordability indicator clearly labels cheap, similar, expensive, or very expensive
 

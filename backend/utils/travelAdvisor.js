@@ -45,13 +45,57 @@ const DEFAULT_PRICE_CONTEXT = {
     destinationTypicalRange: { USD: { min: 18, max: 30 } },
     homeTypicalRange: { INR: { min: 150, max: 300 } }
   },
+  fastFood: {
+    destinationTypicalRange: { USD: { min: 8, max: 14 } },
+    homeTypicalRange: { INR: { min: 180, max: 400 } }
+  },
   coffee: {
     destinationTypicalRange: { USD: { min: 4, max: 7 } },
     homeTypicalRange: { INR: { min: 50, max: 150 } }
   },
+  movie: {
+    destinationTypicalRange: { USD: { min: 12, max: 25 } },
+    homeTypicalRange: { INR: { min: 180, max: 600 } }
+  },
+  amusement: {
+    destinationTypicalRange: { USD: { min: 60, max: 160 } },
+    homeTypicalRange: { INR: { min: 1000, max: 5000 } }
+  },
+  museum: {
+    destinationTypicalRange: { USD: { min: 15, max: 35 } },
+    homeTypicalRange: { INR: { min: 100, max: 800 } }
+  },
   taxi: {
     destinationTypicalRange: { USD: { min: 12, max: 25 } },
     homeTypicalRange: { INR: { min: 100, max: 300 } }
+  },
+  transit: {
+    destinationTypicalRange: { USD: { min: 2, max: 5 } },
+    homeTypicalRange: { INR: { min: 20, max: 80 } }
+  },
+  carRental: {
+    destinationTypicalRange: { USD: { min: 45, max: 120 } },
+    homeTypicalRange: { INR: { min: 1800, max: 6000 } }
+  },
+  hotel: {
+    destinationTypicalRange: { USD: { min: 70, max: 180 } },
+    homeTypicalRange: { INR: { min: 1000, max: 5000 } }
+  },
+  hostel: {
+    destinationTypicalRange: { USD: { min: 25, max: 60 } },
+    homeTypicalRange: { INR: { min: 400, max: 1200 } }
+  },
+  water: {
+    destinationTypicalRange: { USD: { min: 1, max: 3 } },
+    homeTypicalRange: { INR: { min: 15, max: 40 } }
+  },
+  groceries: {
+    destinationTypicalRange: { USD: { min: 25, max: 60 } },
+    homeTypicalRange: { INR: { min: 500, max: 1200 } }
+  },
+  sim: {
+    destinationTypicalRange: { USD: { min: 5, max: 30 } },
+    homeTypicalRange: { INR: { min: 50, max: 500 } }
   },
   phone: {
     destinationTypicalRange: { USD: { min: 799, max: 1199 } },
@@ -64,6 +108,10 @@ const DEFAULT_PRICE_CONTEXT = {
   clothing: {
     destinationTypicalRange: { USD: { min: 20, max: 80 } },
     homeTypicalRange: { INR: { min: 500, max: 3000 } }
+  },
+  haircut: {
+    destinationTypicalRange: { USD: { min: 20, max: 60 } },
+    homeTypicalRange: { INR: { min: 100, max: 600 } }
   },
   product: {
     destinationTypicalRange: { USD: { min: 20, max: 100 } },
@@ -80,10 +128,22 @@ function fallbackRange(currency, type) {
 function getItemContext(item) {
   const normalized = item.toLowerCase();
   if (normalized.includes('coffee') || normalized.includes('tea')) return { key: 'coffee', category: 'food', benchmark: `${item} prices` };
+  if (normalized.includes('fast food')) return { key: 'fastFood', category: 'food', benchmark: 'fast food prices' };
+  if (normalized.includes('movie')) return { key: 'movie', category: 'entertainment', benchmark: `${item} prices` };
+  if (normalized.includes('amusement') || normalized.includes('theme park')) return { key: 'amusement', category: 'entertainment', benchmark: `${item} prices` };
+  if (normalized.includes('museum') || normalized.includes('attraction')) return { key: 'museum', category: 'entertainment', benchmark: `${item} prices` };
+  if (normalized.includes('transit') || normalized.includes('metro') || normalized.includes('bus') || normalized.includes('train')) return { key: 'transit', category: 'transport', benchmark: `${item} prices` };
   if (normalized.includes('taxi') || normalized.includes('cab') || normalized.includes('ride') || normalized.includes('uber')) return { key: 'taxi', category: 'transport', benchmark: `${item} prices` };
+  if (normalized.includes('car rental') || normalized.includes('rental car')) return { key: 'carRental', category: 'transport', benchmark: `${item} prices` };
+  if (normalized.includes('hotel')) return { key: 'hotel', category: 'stay', benchmark: `${item} prices` };
+  if (normalized.includes('hostel')) return { key: 'hostel', category: 'stay', benchmark: `${item} prices` };
+  if (normalized.includes('water')) return { key: 'water', category: 'food', benchmark: `${item} prices` };
+  if (normalized.includes('grocery') || normalized.includes('groceries')) return { key: 'groceries', category: 'food', benchmark: `${item} prices` };
+  if (normalized.includes('sim') || normalized.includes('data') || normalized.includes('mobile')) return { key: 'sim', category: 'connectivity', benchmark: `${item} prices` };
   if (normalized.includes('iphone') || normalized.includes('phone') || normalized.includes('smartphone')) return { key: 'phone', category: 'product', benchmark: `${item} prices` };
   if (normalized.includes('laptop') || normalized.includes('macbook') || normalized.includes('computer')) return { key: 'laptop', category: 'product', benchmark: `${item} prices` };
   if (normalized.includes('shoe') || normalized.includes('sneaker') || normalized.includes('clothes') || normalized.includes('clothing') || normalized.includes('shirt')) return { key: 'clothing', category: 'product', benchmark: `${item} prices` };
+  if (normalized.includes('haircut')) return { key: 'haircut', category: 'service', benchmark: `${item} prices` };
   if (normalized.includes('lunch') || normalized.includes('dinner') || normalized.includes('meal') || normalized.includes('food')) return { key: 'lunch', category: 'food', benchmark: 'daily food costs' };
   return { key: 'product', category: 'product', benchmark: `${item} prices` };
 }
