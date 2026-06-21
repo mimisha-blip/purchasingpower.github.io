@@ -42,6 +42,7 @@ Phase 1: Basic Conversion
 - Insight Layer: explain what the converted price means in human terms, not just numbers
 - Travel Price Advisor: answer whether a specific travel price is cheap, normal, or expensive using local and home-country context
 - Single-item converter removed from the UI; the app should prioritize advice and trip planning over raw conversion.
+- Metric guide: clearly explain Price, Currency Conversion, Travel Affordability Score, Local Price Range, Home Price Range, and Verdict.
 - No user accounts
 - No image recognition (Phase 2+)
 - Basic UI (no fancy design)

@@ -248,6 +248,33 @@ input:focus {
   font-size: 0.92rem;
 }
 
+.metric-guide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.metric-guide div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef2f9;
+  border-radius: 10px;
+}
+
+.metric-guide strong {
+  color: #1e293b;
+  font-size: 0.88rem;
+}
+
+.metric-guide span {
+  color: #64748b;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
 .advisor-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -308,6 +335,12 @@ input:focus {
   color: #64748b;
   font-size: 0.76rem;
   font-weight: 700;
+}
+
+.advisor-facts small {
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
 /* ---------- Buttons ---------- */
@@ -1031,6 +1064,7 @@ button.secondary:hover {
   .advisor-grid,
   .advisor-ranges,
   .advisor-facts,
+  .metric-guide,
   .insight-metrics,
   .result-grid {
     grid-template-columns: 1fr;

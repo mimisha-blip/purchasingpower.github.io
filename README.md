@@ -37,6 +37,15 @@ Travel Affordability Score = Feels like spending Rs90 in India
 Verdict = Normal local pricing
 ```
 
+Metric guide:
+
+- Price: the amount shown by the shop, menu, ticket, or receipt in the destination currency.
+- Currency conversion: what that price becomes in your home currency using the exchange rate.
+- Travel Affordability Score: the "feels like" amount in your home currency after adjusting for local affordability.
+- Local price range: the normal low-to-high price for the same item in the destination city.
+- Home price range: the normal low-to-high price for the same item in your home country.
+- Verdict: the final answer that explains whether the price is cheap, normal, or expensive.
+
 Advisor example:
 
 ```text

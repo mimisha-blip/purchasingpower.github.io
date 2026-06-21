@@ -23,6 +23,33 @@ const NUMERIC_FIELDS = new Set([
   'home_typical_max'
 ]);
 
+const METRIC_GUIDE = [
+  {
+    name: 'Price',
+    detail: 'The amount shown by the shop, menu, ticket, or receipt in the destination currency.'
+  },
+  {
+    name: 'Currency conversion',
+    detail: 'What that price becomes in your home currency using the exchange rate.'
+  },
+  {
+    name: 'Travel Affordability Score',
+    detail: 'The "feels like" amount in your home currency after adjusting for local affordability.'
+  },
+  {
+    name: 'Local price range',
+    detail: 'The normal low-to-high price for the same item in the destination city.'
+  },
+  {
+    name: 'Home price range',
+    detail: 'The normal low-to-high price for the same item in your home country.'
+  },
+  {
+    name: 'Verdict',
+    detail: 'The final answer: cheap, normal, or expensive, with scam-risk context when useful.'
+  }
+];
+
 function toPayload(form) {
   return Object.fromEntries(
     Object.entries(form).map(([key, value]) => [
@@ -81,10 +108,19 @@ export default function TravelPriceAdvisor({ countries }) {
         </div>
 
         <div className="score-explainer">
-          <strong>What is Travel Affordability Score?</strong>
+          <strong>Metric guide</strong>
           <span>
-            It is the "feels like" price in your home currency. Currency conversion tells what you pay at the exchange rate; the score estimates how that price compares with everyday local affordability at home.
+            The advisor separates what you pay from what the price feels like, then compares both against normal local and home-country ranges.
           </span>
+        </div>
+
+        <div className="metric-guide">
+          {METRIC_GUIDE.map((metric) => (
+            <div key={metric.name}>
+              <strong>{metric.name}</strong>
+              <span>{metric.detail}</span>
+            </div>
+          ))}
         </div>
 
         <div className="advisor-grid">
@@ -152,10 +188,12 @@ export default function TravelPriceAdvisor({ countries }) {
             <div>
               <span>Exchange rate used</span>
               <strong>1 {destinationCountry?.currency_code} = {homeCountry?.currency_code} {advice.exchange_rate?.toFixed(2)}</strong>
+              <small>Used for currency conversion: the amount you would pay after exchanging money.</small>
             </div>
             <div>
               <span>Travel Affordability Score</span>
               <strong>{homeCountry?.currency_code} {advice.affordability_score?.toFixed(2)}</strong>
+              <small>The "feels like" value in your home economy.</small>
             </div>
           </div>
           <p>{advice.conversion}</p>
