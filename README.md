@@ -1,4 +1,4 @@
-# Purchase Parity Converter
+# Global Cost Advisor
 
 ## Problem
 
@@ -6,11 +6,11 @@ Travelers often judge whether something is "expensive" or "cheap" based only on 
 
 ## Why It Matters
 
-People planning international trips need a clearer way to understand real-world affordability before deciding what is worth buying. Purchase Parity Converter helps travelers, students, expats, and budget-conscious users estimate whether prices in another country feel cheap, normal, or expensive compared with their home economy.
+People planning international trips need a clearer way to understand real-world affordability before deciding what is worth buying. Global Cost Advisor helps travelers, students, expats, and budget-conscious users estimate whether prices in another country feel cheap, normal, or expensive compared with their home economy.
 
 ## Solution
 
-Purchase Parity Converter is a web app that compares travel and relocation costs with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what prices and monthly lifestyle costs feel like in the user's home country.
+Global Cost Advisor is a web app that compares travel and relocation costs with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what prices and monthly lifestyle costs feel like in the user's home country.
 
 The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a Travel Price Advisor, a Relocation Cost Advisor, and a side chat assistant for travelers, digital nomads, international students, and expats.
 

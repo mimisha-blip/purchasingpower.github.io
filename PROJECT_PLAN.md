@@ -1,4 +1,4 @@
-# Purchase Parity Converter
+# Global Cost Advisor
 ## Project Planning Document
 
 ---

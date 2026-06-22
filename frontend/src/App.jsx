@@ -48,7 +48,7 @@ export default function App() {
         <header className="header-glass">
           <div className="header-top">
             <span className="header-icon">✈️</span>
-            <h1>Purchase Parity Converter</h1>
+            <h1>Global Cost Advisor</h1>
           </div>
           <p className="subtitle">
             See what a trip really costs you, adjusted for purchasing power — not just exchange rates.

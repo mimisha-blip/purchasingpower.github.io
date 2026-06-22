@@ -34,7 +34,7 @@ export const db = new sqlite3.Database(process.env.DATABASE_PATH || './data/ppp_
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Purchase Parity Converter API is running' });
+  res.json({ status: 'OK', message: 'Global Cost Advisor API is running' });
 });
 
 // Routes
