@@ -19,7 +19,46 @@ A web/mobile app that converts prices between countries and adds a Travel Afford
 
 ---
 
-## 2. MVP (MINIMUM VIABLE PRODUCT)
+## 2. FEATURE HIGHLIGHTS
+
+### 1. Travel Price Advisor
+**User action:** Select an item, enter the price seen abroad, choose home and destination countries.
+
+**Output:** Currency conversion, Travel Affordability Score, local verdict, and home-country comparison.
+
+**Why it matters:** Helps users know if a price is normal, expensive, or unusually low without relying only on exchange rates.
+
+### 2. Travel Affordability Score
+**User action:** View the "feels like" value for a foreign price.
+
+**Output:** A home-country equivalent that explains how expensive the price feels relative to the user's economy.
+
+**Why it matters:** Converts raw currency into real spending context.
+
+### 3. 20 Preset Advisor Items
+**User action:** Choose from a focused list instead of typing free-form items.
+
+**Output:** More accurate comparisons for electronics, food, transport, entertainment, stay, services, and everyday products.
+
+**Why it matters:** Prevents mismatched comparisons, such as comparing laptops against food prices.
+
+### 4. Relocation Cost Advisor
+**User action:** Select origin country, destination city, and lifestyle level.
+
+**Output:** Expected monthly spending, equivalent home lifestyle, category cost increases, biggest cost shock, and most affordable category.
+
+**Why it matters:** Supports relocation, international students, digital nomads, and expats planning a move.
+
+### 5. Floating Chat Assistant
+**User action:** Ask follow-up questions from any screen.
+
+**Output:** Plain-language answers about affordability scores, rent shocks, electronics, monthly budgets, and category differences.
+
+**Why it matters:** Makes the product feel like an advisor, not just a calculator.
+
+---
+
+## 3. MVP (MINIMUM VIABLE PRODUCT)
 
 ### Core Features for MVP
 ```
@@ -54,7 +93,7 @@ Phase 1: Basic Conversion
 
 ---
 
-## 3. FEATURE BREAKDOWN
+## 4. FEATURE BREAKDOWN
 
 ### Phase 1: MVP (Weeks 1-2)
 - [ ] Basic UI: country selection from top 10 countries + item selection
@@ -90,7 +129,7 @@ Phase 1: Basic Conversion
 
 ---
 
-## 4. DATA REQUIREMENTS
+## 5. DATA REQUIREMENTS
 
 ### Essential Data Needed
 
@@ -134,7 +173,7 @@ Phase 1: Basic Conversion
 
 ---
 
-## 5. TECHNICAL ARCHITECTURE
+## 6. TECHNICAL ARCHITECTURE
 
 ### Frontend
 ```
@@ -195,7 +234,7 @@ Database: Supabase (PostgreSQL free tier) or MongoDB Atlas
 
 ---
 
-## 6. CORE LOGIC: TRAVEL AFFORDABILITY SCORE
+## 7. CORE LOGIC: TRAVEL AFFORDABILITY SCORE
 
 ### Formula
 ```
@@ -220,7 +259,7 @@ Very Expensive: > 2 × India price 🔴
 
 ---
 
-## 7. SAMPLE USER FLOWS
+## 8. SAMPLE USER FLOWS
 
 ### Flow 1: Compare Single Item
 ```
@@ -268,7 +307,7 @@ User: "Oh! That's overpriced. I'll go to a local café"
 
 ---
 
-## 8. DATA SOURCES & COLLECTION STRATEGY
+## 9. DATA SOURCES & COLLECTION STRATEGY
 
 ### MVP Phase (Manual/API):
 1. **Affordability Data**: Download purchasing-power data from World Bank (one-time, update yearly)
@@ -302,7 +341,7 @@ Budget hotel  | ₹1000   | $70    | £55    | ¥8000  | R$180  | A$120
 
 ---
 
-## 9. TECH STACK DECISION
+## 10. TECH STACK DECISION
 
 ### Frontend
 - **React.js** (popular, lots of resources)
@@ -329,7 +368,7 @@ Budget hotel  | ₹1000   | $70    | £55    | ¥8000  | R$180  | A$120
 
 ---
 
-## 10. PROJECT TIMELINE
+## 11. PROJECT TIMELINE
 
 ```
 Week 1:
@@ -350,7 +389,7 @@ Week 3+: Phase 2 features
 
 ---
 
-## 11. SUCCESS METRICS
+## 12. SUCCESS METRICS
 
 - [ ] MVP deployed and accessible
 - [ ] Converts prices across the 10 MVP countries accurately
@@ -362,7 +401,7 @@ Week 3+: Phase 2 features
 
 ---
 
-## 12. DECISIONS FINALIZED ✅
+## 13. DECISIONS FINALIZED ✅
 
 1. **Mobile app or web-only for MVP?** ✅ Web-first, mobile app in Phase 3
 2. **How to handle countries without official affordability data?** ✅ Keep the MVP to countries with usable data
