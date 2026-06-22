@@ -8,6 +8,7 @@ import itemsRoutes from './routes/items.js';
 import pricesRoutes from './routes/prices.js';
 import tripPlannerRoutes from './routes/tripPlanner.js';
 import advisorRoutes from './routes/advisor.js';
+import relocationRoutes from './routes/relocation.js';
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/api/items', itemsRoutes);
 app.use('/api/prices', pricesRoutes);
 app.use('/api/trip-planner', tripPlannerRoutes);
 app.use('/api/advisor', advisorRoutes);
+app.use('/api/relocation', relocationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

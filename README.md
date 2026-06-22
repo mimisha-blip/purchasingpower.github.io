@@ -10,9 +10,9 @@ People planning international trips need a clearer way to understand real-world 
 
 ## Solution
 
-Purchase Parity Converter is a web app that compares travel prices with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what a price feels like in the user's home country and whether it is meaningfully cheaper, similar, or more expensive than the home benchmark.
+Purchase Parity Converter is a web app that compares travel and relocation costs with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what prices and monthly lifestyle costs feel like in the user's home country.
 
-The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a simple verdict, and a Travel Price Advisor. The single-item converter was removed so the app can focus on advice instead of raw conversion.
+The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a Travel Price Advisor, and a Relocation Cost Advisor for travelers, digital nomads, international students, and expats.
 
 ## How It Works
 
@@ -21,6 +21,7 @@ The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor 
 3. The backend fills exchange rates, normal price ranges, and purchasing-power data.
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
 5. The Travel Price Advisor answers questions like, "Is $25 for lunch in the USA expensive for someone from India?" using stored exchange rates, local price ranges, and home-country affordability context.
+6. The Relocation Cost Advisor estimates monthly lifestyle costs, equivalent home-country lifestyle, biggest cost shock, and most affordable category.
 
 Core calculation:
 
@@ -62,8 +63,9 @@ Answer: $999 may be normal for an iPhone in the USA, and for someone from India 
 - MVP data: India, United States, United Kingdom, Japan, Australia, Canada, Germany, France, Singapore, Brazil
 - Insight Layer: plain-English interpretation of Travel Affordability Score results
 - Travel Price Advisor: structured AI-style explanation using local range, exchange-rate, and affordability-score data
+- Relocation Cost Advisor: monthly lifestyle comparison for relocation, students, digital nomads, and expats
 - Data model: countries, items, prices, affordability indexes, exchange rates
-- API routes: countries, items, prices, travel price advisor, trip planning
+- API routes: countries, items, prices, travel price advisor, relocation advisor, trip planning
 - Version control and hosting: GitHub
 
 ## Future Improvements

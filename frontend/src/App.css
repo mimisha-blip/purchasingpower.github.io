@@ -111,7 +111,7 @@ header h1 {
   position: absolute;
   top: 6px;
   left: 6px;
-  width: calc(50% - 8px);
+  width: calc(33.333% - 8px);
   height: calc(100% - 12px);
   background: #ffffff;
   border-radius: 10px;
@@ -121,6 +121,10 @@ header h1 {
 
 .tab-indicator.tab-planner {
   transform: translateX(100%);
+}
+
+.tab-indicator.tab-relocation {
+  transform: translateX(200%);
 }
 
 .tab-toggle button {
@@ -308,6 +312,60 @@ input:focus {
   color: #64748b;
   font-size: 0.78rem;
   line-height: 1.35;
+}
+
+.relocation-highlights {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.relocation-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.relocation-bar-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.relocation-bar-row > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.relocation-bar-row span {
+  color: #475569;
+  font-size: 0.86rem;
+}
+
+.relocation-bar-row strong {
+  color: #1e293b;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.relocation-track {
+  height: 9px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.relocation-fill {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  background: #c2410c;
+  border-radius: inherit;
+}
+
+.relocation-fill.affordable {
+  background: #15803d;
 }
 
 /* ---------- Buttons ---------- */
@@ -1033,5 +1091,10 @@ button.secondary:hover {
   .insight-metrics,
   .result-grid {
     grid-template-columns: 1fr;
+  }
+
+  .relocation-bar-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }

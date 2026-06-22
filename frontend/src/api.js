@@ -38,3 +38,10 @@ export function advisePrice(payload) {
     body: JSON.stringify(payload)
   });
 }
+
+export function estimateRelocation(payload) {
+  return request('/relocation/estimate', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCountries, getItems } from './api.js';
 import TripPlanner from './TripPlanner.jsx';
 import TravelPriceAdvisor from './TravelPriceAdvisor.jsx';
+import RelocationAdvisor from './RelocationAdvisor.jsx';
 import TravelBackdrop from './TravelBackdrop.jsx';
 import './App.css';
 
@@ -72,13 +73,21 @@ export default function App() {
           >
             Trip Planner
           </button>
+          <button
+            className={activeTab === 'relocation' ? 'active' : ''}
+            onClick={() => setActiveTab('relocation')}
+          >
+            Relocation
+          </button>
         </div>
 
         <div key={activeTab} className="tab-panel">
           {activeTab === 'advisor' ? (
             <TravelPriceAdvisor countries={countries} />
-          ) : (
+          ) : activeTab === 'planner' ? (
             <TripPlanner countries={countries} items={items} />
+          ) : (
+            <RelocationAdvisor countries={countries} />
           )}
         </div>
       </div>
