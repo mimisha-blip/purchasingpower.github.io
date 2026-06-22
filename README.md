@@ -65,7 +65,7 @@ Answer: $999 may be normal for an iPhone in the USA, and for someone from India 
 - Travel Price Advisor: structured AI-style explanation using local range, exchange-rate, and affordability-score data
 - Relocation Cost Advisor: monthly lifestyle comparison for relocation, students, digital nomads, and expats
 - Data model: countries, items, prices, affordability indexes, exchange rates
-- API routes: countries, items, prices, travel price advisor, relocation advisor, trip planning
+- API routes: countries, items, prices, travel price advisor, relocation advisor
 - Version control and hosting: GitHub
 
 ## Future Improvements
@@ -80,4 +80,4 @@ Answer: $999 may be normal for an iPhone in the USA, and for someone from India 
 
 ## Screenshots
 
-Screenshots are not committed yet. Add app screenshots here after capturing the Travel Price Advisor and Trip Planner screens.
+Screenshots are not committed yet. Add app screenshots here after capturing the Travel Price Advisor and Relocation screens.

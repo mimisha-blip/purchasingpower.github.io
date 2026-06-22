@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCountries, getItems } from './api.js';
-import TripPlanner from './TripPlanner.jsx';
+import { getCountries } from './api.js';
 import TravelPriceAdvisor from './TravelPriceAdvisor.jsx';
 import RelocationAdvisor from './RelocationAdvisor.jsx';
 import TravelBackdrop from './TravelBackdrop.jsx';
@@ -8,16 +7,12 @@ import './App.css';
 
 export default function App() {
   const [countries, setCountries] = useState([]);
-  const [items, setItems] = useState([]);
   const [loadError, setLoadError] = useState('');
   const [activeTab, setActiveTab] = useState('advisor');
 
   useEffect(() => {
-    Promise.all([getCountries(), getItems()])
-      .then(([countriesRes, itemsRes]) => {
-        setCountries(countriesRes.data);
-        setItems(itemsRes.data);
-      })
+    getCountries()
+      .then((countriesRes) => setCountries(countriesRes.data))
       .catch((err) => setLoadError(err.message));
   }, []);
 
@@ -34,7 +29,7 @@ export default function App() {
     );
   }
 
-  if (countries.length === 0 || items.length === 0) {
+  if (countries.length === 0) {
     return (
       <>
         <TravelBackdrop />
@@ -68,12 +63,6 @@ export default function App() {
             Advisor
           </button>
           <button
-            className={activeTab === 'planner' ? 'active' : ''}
-            onClick={() => setActiveTab('planner')}
-          >
-            Trip Planner
-          </button>
-          <button
             className={activeTab === 'relocation' ? 'active' : ''}
             onClick={() => setActiveTab('relocation')}
           >
@@ -84,8 +73,6 @@ export default function App() {
         <div key={activeTab} className="tab-panel">
           {activeTab === 'advisor' ? (
             <TravelPriceAdvisor countries={countries} />
-          ) : activeTab === 'planner' ? (
-            <TripPlanner countries={countries} items={items} />
           ) : (
             <RelocationAdvisor countries={countries} />
           )}

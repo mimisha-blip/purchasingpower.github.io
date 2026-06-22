@@ -43,7 +43,7 @@ Phase 1: Basic Conversion
 - Insight Layer: explain what the converted price means in human terms, not just numbers
 - Travel Price Advisor: answer whether a specific travel price is cheap, normal, or expensive using local and home-country context
 - Relocation Cost Advisor: compare expected monthly spending, equivalent home lifestyle, category increases, biggest cost shock, and most affordable category
-- Single-item converter removed from the UI; the app should prioritize advice and trip planning over raw conversion.
+- Single-item converter and Trip Planner removed from the UI; the app should prioritize price advice and relocation planning over raw conversion.
 - Summary-first advisor flow: show a short answer, currency conversion, Travel Affordability Score, and item-specific context.
 - No user accounts
 - No image recognition (Phase 2+)
