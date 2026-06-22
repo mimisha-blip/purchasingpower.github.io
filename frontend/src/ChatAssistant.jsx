@@ -89,7 +89,7 @@ export default function ChatAssistant() {
         onClick={() => setOpen((prev) => !prev)}
         aria-label={open ? 'Close affordability assistant' : 'Open affordability assistant'}
       >
-        ?
+        AI
       </button>
     </div>
   );

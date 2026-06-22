@@ -386,8 +386,9 @@ input:focus {
   border-radius: 50%;
   background: #5c3a21;
   color: #ffffff;
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   font-weight: 900;
+  letter-spacing: 0.04em;
   cursor: pointer;
   box-shadow: 0 12px 24px rgba(20, 12, 6, 0.35);
 }
