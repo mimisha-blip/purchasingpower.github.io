@@ -192,7 +192,7 @@ export function buildTravelPriceAdvice(input) {
   const homeFeel = feelsExpensiveAtHome ? 'expensive' : 'reasonable';
   const homeComparison = homeComparisonText({ item: input.item, homeCountry: input.homeCountry, homeFeel });
   const homeContext = homeContextText({ item: input.item, homeCountry: input.homeCountry, homeFeel });
-  const summary = `It is not a scam price, but it is ${homeComparison}.`;
+  const summary = `This price is ${localVerdict} locally and feels ${homeComparison}.`;
 
   return {
     verdict: sentenceCase(localVerdict),

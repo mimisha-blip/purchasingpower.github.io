@@ -23,8 +23,27 @@ test('explains whether a New York lunch is normal or expensive for an Indian tra
     affordability: 'For someone from India, it may feel closer to spending around INR 500.00.',
     localContext: 'In New York, a typical lunch is around USD 18.00-30.00, so this is normal local pricing.',
     homeContext: 'Compared with a typical lunch in India at INR 150.00-300.00, it will still feel expensive against everyday food costs at home.',
-    summary: 'It is not a scam price, but it is expensive compared with Indian daily food costs.'
+    summary: 'This price is normal local pricing locally and feels expensive compared with Indian daily food costs.'
   });
+});
+
+test('uses user-friendly summary language without scam wording', () => {
+  const advice = buildTravelPriceAdvice({
+    item: 'lunch',
+    destinationCity: 'New York',
+    destinationCountry: 'USA',
+    homeCountry: 'India',
+    destinationCurrency: 'USD',
+    destinationPrice: 25,
+    homeCurrency: 'INR',
+    exchangeRate: 83,
+    affordabilityScore: 500,
+    destinationTypicalRange: { min: 18, max: 30 },
+    homeTypicalRange: { min: 150, max: 300 }
+  });
+
+  assert.doesNotMatch(advice.summary, /scam/i);
+  assert.match(advice.summary, /normal local pricing/i);
 });
 
 test('derives exchange conversion and affordability score from country indexes', () => {
