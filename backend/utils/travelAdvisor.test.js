@@ -23,7 +23,7 @@ test('explains whether a New York lunch is normal or expensive for an Indian tra
     affordability: 'For someone from India, it may feel closer to spending around INR 500.00.',
     localContext: 'In New York, a typical lunch is around USD 18.00-30.00, so this is normal local pricing.',
     homeContext: 'Compared with a typical lunch in India at INR 150.00-300.00, it will still feel expensive against everyday food costs at home.',
-    summary: 'This price is normal local pricing locally and feels expensive compared with Indian daily food costs.'
+    summary: 'This price is normal for the destination. For someone from India, it feels expensive compared with Indian daily food costs.'
   });
 });
 
@@ -43,7 +43,7 @@ test('uses user-friendly summary language without scam wording', () => {
   });
 
   assert.doesNotMatch(advice.summary, /scam/i);
-  assert.match(advice.summary, /normal local pricing/i);
+  assert.match(advice.summary, /normal for the destination/i);
 });
 
 test('derives exchange conversion and affordability score from country indexes', () => {
@@ -93,7 +93,7 @@ test('builds a complete advisor input when users only provide item, price, and c
 
   assert.equal(input.destinationCity, 'United States');
   assert.deepEqual(input.destinationTypicalRange, { min: 18, max: 30 });
-  assert.deepEqual(input.homeTypicalRange, { min: 150, max: 300 });
+  assert.deepEqual(input.homeTypicalRange, { min: 200, max: 500 });
 });
 
 test('provides default ranges for common item context', () => {
@@ -106,7 +106,7 @@ test('provides default ranges for common item context', () => {
   assert.deepEqual(context, {
     destinationCity: 'the destination',
     destinationTypicalRange: { min: 18, max: 30 },
-    homeTypicalRange: { min: 150, max: 300 }
+    homeTypicalRange: { min: 200, max: 500 }
   });
 });
 
@@ -130,10 +130,39 @@ test('uses product context for iPhone instead of food context', () => {
 
   const advice = buildTravelPriceAdvice(input);
 
-  assert.deepEqual(input.destinationTypicalRange, { min: 799, max: 1199 });
-  assert.deepEqual(input.homeTypicalRange, { min: 70000, max: 160000 });
+  assert.deepEqual(input.destinationTypicalRange, { min: 799, max: 1099 });
+  assert.deepEqual(input.homeTypicalRange, { min: 75000, max: 120000 });
+  assert.equal(input.affordabilityScore, 82917);
   assert.match(advice.summary, /iPhone prices/i);
   assert.doesNotMatch(advice.summary, /food|daily food/i);
+});
+
+test('does not call a mid-range laptop cheap in the US for an Indian user', () => {
+  const input = buildAdvisorInputFromCountries({
+    item: 'Laptop',
+    destinationCountry: {
+      country_name: 'United States',
+      currency_code: 'USD',
+      exchange_rate: 1,
+      ppp_index: 1
+    },
+    homeCountry: {
+      country_name: 'India',
+      currency_code: 'INR',
+      exchange_rate: 83,
+      ppp_index: 20
+    },
+    destinationPrice: 1100
+  });
+
+  const advice = buildTravelPriceAdvice(input);
+
+  assert.deepEqual(input.destinationTypicalRange, { min: 900, max: 1400 });
+  assert.deepEqual(input.homeTypicalRange, { min: 70000, max: 130000 });
+  assert.equal(input.affordabilityScore, 91300);
+  assert.equal(advice.verdict, 'Normal local pricing');
+  assert.match(advice.summary, /normal for the destination/i);
+  assert.doesNotMatch(advice.summary, /cheap/i);
 });
 
 test('returns summary-focused advice without step-by-step output', () => {
@@ -174,7 +203,53 @@ test('uses relevant contexts for entertainment and car rental items', () => {
   const amusement = buildAdvisorInputFromCountries({ ...countryPair, item: 'Amusement park ticket', destinationPrice: 120 });
   const carRental = buildAdvisorInputFromCountries({ ...countryPair, item: 'Car rental', destinationPrice: 70 });
 
-  assert.deepEqual(movie.destinationTypicalRange, { min: 12, max: 25 });
-  assert.deepEqual(amusement.destinationTypicalRange, { min: 60, max: 160 });
-  assert.deepEqual(carRental.destinationTypicalRange, { min: 45, max: 120 });
+  assert.deepEqual(movie.destinationTypicalRange, { min: 14, max: 22 });
+  assert.deepEqual(amusement.destinationTypicalRange, { min: 90, max: 160 });
+  assert.deepEqual(carRental.destinationTypicalRange, { min: 60, max: 120 });
+});
+
+test('has medium benchmark ranges for every advisor item', () => {
+  const countryPair = {
+    destinationCountry: {
+      country_name: 'United States',
+      currency_code: 'USD',
+      exchange_rate: 1,
+      ppp_index: 1
+    },
+    homeCountry: {
+      country_name: 'India',
+      currency_code: 'INR',
+      exchange_rate: 83,
+      ppp_index: 20
+    }
+  };
+
+  const expectations = {
+    iPhone: [{ min: 799, max: 1099 }, { min: 75000, max: 120000 }],
+    Smartphone: [{ min: 500, max: 900 }, { min: 30000, max: 80000 }],
+    Laptop: [{ min: 900, max: 1400 }, { min: 70000, max: 130000 }],
+    Coffee: [{ min: 4, max: 7 }, { min: 80, max: 250 }],
+    Lunch: [{ min: 18, max: 30 }, { min: 200, max: 500 }],
+    'Fast food meal': [{ min: 9, max: 14 }, { min: 250, max: 450 }],
+    'Movie ticket': [{ min: 14, max: 22 }, { min: 250, max: 600 }],
+    'Amusement park ticket': [{ min: 90, max: 160 }, { min: 1500, max: 5000 }],
+    'Museum ticket': [{ min: 15, max: 30 }, { min: 150, max: 800 }],
+    'Taxi ride': [{ min: 15, max: 30 }, { min: 150, max: 500 }],
+    'Public transit ride': [{ min: 2.5, max: 4 }, { min: 20, max: 80 }],
+    'Car rental': [{ min: 60, max: 120 }, { min: 2500, max: 6000 }],
+    'Hotel room': [{ min: 120, max: 220 }, { min: 2500, max: 7000 }],
+    'Hostel bed': [{ min: 35, max: 70 }, { min: 600, max: 1500 }],
+    'Bottled water': [{ min: 1.5, max: 3 }, { min: 20, max: 50 }],
+    Groceries: [{ min: 45, max: 80 }, { min: 800, max: 1600 }],
+    'Local SIM card': [{ min: 15, max: 40 }, { min: 200, max: 700 }],
+    Sneakers: [{ min: 70, max: 140 }, { min: 3000, max: 10000 }],
+    'T-shirt': [{ min: 20, max: 40 }, { min: 500, max: 1500 }],
+    Haircut: [{ min: 30, max: 70 }, { min: 200, max: 800 }]
+  };
+
+  for (const [item, [destinationRange, homeRange]] of Object.entries(expectations)) {
+    const input = buildAdvisorInputFromCountries({ ...countryPair, item, destinationPrice: destinationRange.min });
+    assert.deepEqual(input.destinationTypicalRange, destinationRange, item);
+    assert.deepEqual(input.homeTypicalRange, homeRange, item);
+  }
 });
