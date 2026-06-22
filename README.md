@@ -12,7 +12,7 @@ People planning international trips need a clearer way to understand real-world 
 
 Purchase Parity Converter is a web app that compares travel and relocation costs with a simple **Travel Affordability Score**. Instead of only converting currencies, it explains what prices and monthly lifestyle costs feel like in the user's home country.
 
-The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a Travel Price Advisor, and a Relocation Cost Advisor for travelers, digital nomads, international students, and expats.
+The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor items, currency conversion, Travel Affordability Score, a Travel Price Advisor, a Relocation Cost Advisor, and a side chat assistant for travelers, digital nomads, international students, and expats.
 
 ## How It Works
 
@@ -22,6 +22,7 @@ The MVP is intentionally focused: 10 high-interest countries, 20 varied advisor 
 4. The frontend displays currency conversion, Travel Affordability Score, and a plain-English verdict.
 5. The Travel Price Advisor answers questions like, "Is $25 for lunch in the USA expensive for someone from India?" using stored exchange rates, local price ranges, and home-country affordability context.
 6. The Relocation Cost Advisor estimates monthly lifestyle costs, equivalent home-country lifestyle, biggest cost shock, and most affordable category.
+7. The floating chat assistant answers follow-up questions about prices, affordability scores, relocation costs, and category surprises.
 
 Core calculation:
 
@@ -64,6 +65,7 @@ Answer: $999 may be normal for an iPhone in the USA, and for someone from India 
 - Insight Layer: plain-English interpretation of Travel Affordability Score results
 - Travel Price Advisor: structured AI-style explanation using local range, exchange-rate, and affordability-score data
 - Relocation Cost Advisor: monthly lifestyle comparison for relocation, students, digital nomads, and expats
+- Chat Assistant: floating rule-based Q&A for follow-up affordability questions
 - Data model: countries, items, prices, affordability indexes, exchange rates
 - API routes: countries, items, prices, travel price advisor, relocation advisor
 - Version control and hosting: GitHub

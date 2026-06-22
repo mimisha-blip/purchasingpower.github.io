@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCountries } from './api.js';
 import TravelPriceAdvisor from './TravelPriceAdvisor.jsx';
 import RelocationAdvisor from './RelocationAdvisor.jsx';
+import ChatAssistant from './ChatAssistant.jsx';
 import TravelBackdrop from './TravelBackdrop.jsx';
 import './App.css';
 
@@ -78,6 +79,7 @@ export default function App() {
           )}
         </div>
       </div>
+      <ChatAssistant />
     </>
   );
 }

@@ -31,6 +31,7 @@ Phase 1: Basic Conversion
 ├── Insight Layer with plain-English interpretation
 ├── Travel Price Advisor for simple question-based explanations
 ├── Relocation Cost Advisor for lifestyle monthly-cost comparison
+├── Floating chat assistant for follow-up affordability questions
 ├── Display currency conversion and affordability score
 └── Mobile responsive UI
 ```
@@ -43,6 +44,7 @@ Phase 1: Basic Conversion
 - Insight Layer: explain what the converted price means in human terms, not just numbers
 - Travel Price Advisor: answer whether a specific travel price is cheap, normal, or expensive using local and home-country context
 - Relocation Cost Advisor: compare expected monthly spending, equivalent home lifestyle, category increases, biggest cost shock, and most affordable category
+- Floating Chat Assistant: answer follow-up questions about Travel Affordability Score, San Francisco relocation, electronics, rent, and monthly budgets
 - Single-item converter and Trip Planner removed from the UI; the app should prioritize price advice and relocation planning over raw conversion.
 - Summary-first advisor flow: show a short answer, currency conversion, Travel Affordability Score, and item-specific context.
 - No user accounts
@@ -65,6 +67,7 @@ Phase 1: Basic Conversion
   - Shows insight sentence: "A $5 coffee in the US converts to ₹430, but its Travel Affordability Score feels like spending ₹90 in India. Verdict: Normal local pricing."
   - Shows advisor answer: "$25 is normal for lunch in the USA, but for someone from India it may feel like spending around ₹500."
   - Shows relocation answer: "Moving from India to San Francisco may cost around $4,500/month, similar to a ₹95,000/month lifestyle in India. Biggest shock: rent. Most affordable: electronics."
+  - Shows floating chat assistant for follow-up questions without adding another tab.
 - [ ] Mobile responsive web UI
 - [ ] Deployment: Vercel + Railway/Render
 
@@ -165,6 +168,9 @@ Endpoints:
 ├── POST /api/relocation/estimate
 │   ├── Input: origin_country_id, destination_city, lifestyle_level
 │   └── Output: monthly spending, home-equivalent lifestyle, category changes, cost shocks
+├── POST /api/chat/ask
+│   ├── Input: question
+│   └── Output: assistant answer for affordability and relocation follow-ups
 ├── GET /api/item-search?q=coffee
 │   └── Fuzzy search for items
 └── POST /api/prices (future: crowdsource prices)

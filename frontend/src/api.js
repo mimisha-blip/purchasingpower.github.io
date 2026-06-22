@@ -45,3 +45,10 @@ export function estimateRelocation(payload) {
     body: JSON.stringify(payload)
   });
 }
+
+export function askChat(question) {
+  return request('/chat/ask', {
+    method: 'POST',
+    body: JSON.stringify({ question })
+  });
+}
