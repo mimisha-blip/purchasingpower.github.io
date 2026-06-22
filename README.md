@@ -1,82 +1,166 @@
 # Global Cost Advisor
 
-## Problem
+A travel and relocation affordability tool that helps people understand what prices really mean across countries.
 
-People often judge international prices using currency conversion alone. That creates misleading decisions: a $5 coffee may look expensive when converted to Rs430, but it may be normal local pricing in the destination country.
+The core problem it solves: travelers often judge something as "cheap" or "expensive" using currency conversion alone. A $5 coffee may convert to around Rs430, but that does not explain whether it is normal in the destination country or how it compares with the user's home spending power. Global Cost Advisor adds context through a Travel Affordability Score, item benchmarks, relocation estimates, and a built-in advisor chat.
 
-The same problem becomes larger for people relocating, studying abroad, working remotely, or planning longer stays. They need to understand not only what something costs, but how that cost compares with the lifestyle they are used to at home.
+---
 
-## Why It Matters
+## Features
 
-Global mobility decisions are expensive and emotional. Travelers, students, digital nomads, expats, and relocating professionals need fast answers to questions like:
+- **Travel Price Advisor** - select a preset item, enter the price seen abroad, and get currency conversion, affordability score, and a clear verdict
+- **Travel Affordability Score** - explains what a foreign price feels like in the user's home economy, instead of only showing exchange-rate conversion
+- **20 preset comparison items** - covers common travel and lifestyle purchases such as coffee, lunch, iPhone, laptop, movie ticket, amusement park ticket, car rental, sneakers, hotel room, and haircut
+- **Item-aware reasoning** - compares electronics with electronics, food with food, and services with services so results do not feel mismatched
+- **Relocation Advisor** - estimates monthly spending when moving countries, including housing, food, transportation, utilities, healthcare, and entertainment
+- **Cost shock summary** - highlights the biggest increase, most affordable category, and equivalent lifestyle at home
+- **Floating chat assistant** - lets users ask follow-up questions without opening another tab
 
-- Is this price fair, or am I overpaying?
-- What will my monthly lifestyle cost after moving?
-- Which categories will feel most expensive?
-- What is actually cheaper abroad?
+---
 
-Traditional currency converters answer only the exchange-rate question. Global Cost Advisor focuses on the affordability question.
+## Getting Started
 
-## Solution
+### Prerequisites
 
-Global Cost Advisor is a web app that explains travel and relocation costs through a **Travel Affordability Score**. The product translates prices into plain-language affordability insights, helping users understand how a price or lifestyle cost feels relative to their home economy.
+- [Node.js](https://nodejs.org) v18 or later
+- npm v8 or later
 
-The MVP includes:
+Verify your versions before starting:
 
-- A travel price advisor for item-level decisions
-- A relocation cost advisor for monthly lifestyle planning
-- A floating affordability chatbot for follow-up questions
-- A focused set of 20 common items across travel, electronics, food, transport, stay, entertainment, and services
-
-## Target Users
-
-- Travelers comparing prices abroad
-- International students planning living costs
-- Digital nomads choosing where to live
-- Expats and relocating professionals
-- Budget-conscious users making cross-country spending decisions
-
-## Product Strategy
-
-The product is designed around one core insight: users do not just need conversion, they need context.
-
-Instead of showing only:
-
-```text
-$5 = Rs430
+```bash
+node -v
+npm -v
 ```
 
-Global Cost Advisor shows:
+### Step 1 - Clone the repo
 
-```text
-Currency conversion: Rs430
-Travel Affordability Score: Feels like Rs90 in India
-Verdict: Normal local pricing
+```bash
+git clone https://github.com/mimisha-blip/purchasingpower.github.io.git
+cd purchasingpower.github.io
 ```
 
-This turns the product from a calculator into an affordability decision tool.
+### Step 2 - Install backend dependencies
 
-## Core User Flows
+```bash
+cd backend
+npm install
+```
 
-### 1. Travel Price Advisor
+### Step 3 - Seed the local database
 
-The user selects a home country, destination country, item, and price they saw. The app returns:
+```bash
+npm run seed
+```
 
-- Currency conversion
-- Travel Affordability Score
-- Cheap, normal, or expensive verdict
-- Item-specific context
+This creates and fills the SQLite database with countries, exchange rates, affordability data, and benchmark prices.
+
+### Step 4 - Start the backend
+
+```bash
+PORT=5050 npm run dev
+```
+
+The API runs at `http://localhost:5050/api`.
+
+### Step 5 - Install frontend dependencies
+
+Open a second terminal:
+
+```bash
+cd frontend
+npm install
+```
+
+### Step 6 - Start the frontend
+
+```bash
+npm run dev
+```
+
+The app opens at the local Vite URL shown in the terminal, usually `http://localhost:5173`.
+
+### Step 7 - First run
+
+1. Open the app in your browser
+2. Go to **Advisor**
+3. Select your home country and destination country
+4. Pick one of the preset items
+5. Enter the price you saw abroad
+6. Read the summary, Travel Affordability Score, and verdict
+
+---
+
+## Travel Price Advisor
+
+The Advisor is designed for quick travel decisions.
+
+Example question:
+
+```text
+Is $25 for lunch in New York expensive for someone from India?
+```
+
+Example output:
+
+```text
+Currency conversion: about Rs2,075
+Travel Affordability Score: feels closer to Rs500 in India
+Verdict: normal local pricing, but expensive compared with everyday Indian lunch costs
+```
+
+The goal is not just to convert money. The goal is to explain whether a price is normal, high, or unusually low in real spending context.
+
+### Preset items
+
+The MVP uses a fixed list of 20 varied items:
+
+| Category | Items |
+|---|---|
+| Food & drink | Coffee, lunch, fast food meal, bottled water, groceries |
+| Electronics | iPhone, smartphone, laptop |
+| Entertainment | Movie ticket, amusement park ticket, museum ticket |
+| Transport | Taxi ride, public transit ride, car rental |
+| Stay | Hotel room, hostel bed |
+| Products & services | Local SIM card, sneakers, T-shirt, haircut |
+
+Using preset items keeps the comparison focused and avoids confusing results, such as comparing an iPhone with food benchmarks.
+
+---
+
+## Travel Affordability Score
+
+Travel Affordability Score is the app's plain-language affordability metric.
+
+It answers:
+
+```text
+What would this foreign price feel like in my home country?
+```
+
+For daily spending categories such as food, transport, stay, and services, the score adjusts the price using affordability and local benchmark data. For products such as phones and laptops, the app gives more weight to actual item prices and exchange-rate reality, because electronics often follow global pricing more closely than meals or rent.
+
+### Verdict levels
+
+| Verdict | Meaning |
+|---|---|
+| Cheap | Lower than the normal destination benchmark |
+| Normal local pricing | Within the expected medium range for that country |
+| Expensive | Higher than the usual local range |
+| Very expensive | Much higher than typical local pricing |
+
+---
+
+## Relocation Advisor
+
+The Relocation Advisor helps users estimate what life may cost after moving.
 
 Example:
 
 ```text
-Question: Is $999 for an iPhone in the USA expensive for someone from India?
-Answer: $999 may be normal for an iPhone in the USA, and for someone from India it should be compared with Indian iPhone prices, not daily food costs.
+I'm moving from India to San Francisco.
 ```
 
-### 2. Relocation Cost Advisor
-
-The user selects where they are moving from, where they are moving to, and lifestyle level. The app returns:
+Example output:
 
 ```text
 Expected monthly spending: $4,500
@@ -85,79 +169,105 @@ Most surprising cost increase: Rent
 Most affordable category: Electronics
 ```
 
-Category examples:
+Category comparison:
 
-- Housing: +280%
-- Food: +140%
-- Transportation: +60%
-- Utilities: +45%
+| Category | Example change |
+|---|---:|
+| Housing | +280% |
+| Food | +140% |
+| Transportation | +60% |
+| Utilities | +45% |
 
-### 3. Floating Chat Assistant
+This makes the app useful for travelers, international students, digital nomads, expats, and people planning a move.
 
-The user can ask follow-up questions without leaving the current screen.
+---
+
+## Chat Assistant
+
+The floating chat assistant acts like a travel price advisor, not a general chatbot.
 
 Example questions:
 
 - What does Travel Affordability Score mean?
+- Is $25 lunch in New York expensive for someone from India?
 - Why is rent the biggest shock in San Francisco?
 - What is cheaper in the US than India?
-- How much should I budget for San Francisco?
+- How much should I budget if I move from India to San Francisco?
 
-## MVP Scope
+The assistant gives short, practical answers using the same affordability logic as the app.
 
-The MVP intentionally stays focused:
+---
 
-- 10 high-interest countries
-- 20 preset advisor items
-- India to San Francisco relocation example
-- Rule-based affordability chatbot
-- Summary-first outputs instead of long explanations
+## Data & Assumptions
 
-Preset item categories include:
+The MVP uses seeded benchmark data instead of live internet prices.
 
-- Electronics: iPhone, smartphone, laptop
-- Food: coffee, lunch, fast food, bottled water, groceries
-- Entertainment: movie ticket, amusement park ticket, museum ticket
-- Transport: taxi ride, public transit ride, car rental
-- Stay: hotel room, hostel bed
-- Services/products: local SIM card, sneakers, T-shirt, haircut
+### What the data includes
 
-## Success Metrics
+- Country affordability indexes
+- Exchange rates
+- Medium-range item prices
+- Typical destination price ranges
+- Relocation category estimates
 
-Potential product success metrics:
+### Why medium-range prices
 
-- Users can understand whether a price is fair in under 30 seconds
-- Users can identify the biggest relocation cost shock in one result view
-- Users ask follow-up questions through the chat assistant
-- Users compare more than one item or lifestyle category per session
-- Users report higher confidence in travel or relocation budgeting decisions
+The app intentionally uses medium-range prices, not the cheapest prices. The goal is to show what a user is likely to experience in normal travel or relocation scenarios, not the best possible bargain.
 
-## Tech Stack
+### Important note
 
-- Frontend: React, Vite, CSS
-- Backend: Node.js, Express
-- Database: SQLite
-- Data model: countries, prices, affordability indexes, exchange rates
-- APIs: travel price advisor, relocation advisor, chat assistant
-- Version control: GitHub
+All outputs are directional estimates. They are meant to support better decisions, not replace live market research for major purchases or relocation planning.
 
-## Roadmap
+---
 
-Planned improvements:
+## Demo Scenarios
 
-- Add more relocation cities
-- Add city-level price comparisons
-- Add live exchange-rate updates
-- Expand item and category data
-- Add user-submitted price feedback
-- Add saved comparisons
-- Connect the chat assistant to a real LLM with structured app data
-- Add screenshots and deployment links
+Try these examples after running the app:
+
+| Scenario | What to test |
+|---|---|
+| India to USA, coffee, $5 | Shows conversion, affordability score, and normal local pricing |
+| India to USA, iPhone, $999 | Compares against electronics pricing, not food affordability |
+| India to USA, lunch, $25 | Explains that the price is normal locally but still feels expensive from India |
+| India to San Francisco relocation | Shows monthly spending and category cost shock |
+
+---
 
 ## Screenshots
 
 Screenshots are not committed yet. Add screenshots for:
 
 - Travel Price Advisor
-- Relocation Cost Advisor
+- Relocation Advisor
 - Floating Chat Assistant
+
+---
+
+## Roadmap
+
+### V0 - Current MVP
+
+React + Express + SQLite app with seeded data, preset advisor items, relocation estimates, and rule-based chat guidance.
+
+### V1 - Better data coverage
+
+Add more countries, more cities, richer item benchmarks, and scheduled exchange-rate updates.
+
+### V2 - Smarter advisor
+
+Connect the chat assistant to a real LLM with structured app data, add city-level price intelligence, and support more nuanced user questions.
+
+### V3 - Personalization
+
+Add saved comparisons, user-submitted prices, custom lifestyle profiles, and relocation budget reports.
+
+---
+
+## Tech Stack
+
+- [React](https://react.dev) - frontend UI
+- [Vite](https://vitejs.dev) - frontend dev server and build tooling
+- [Node.js](https://nodejs.org) - backend runtime
+- [Express](https://expressjs.com) - API server
+- [SQLite](https://www.sqlite.org) - local database
+- CSS - responsive styling
